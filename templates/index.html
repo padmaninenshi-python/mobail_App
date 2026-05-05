@@ -502,9 +502,10 @@ body {
     background: #fff;
   }
 
-  /* ── CANVAS AREA: video preview zone (InShot style) ── */
+  /* ── CANVAS AREA: video preview zone — ORDER-1 so it always shows on TOP ── */
   .canvas-area {
-    flex: 0 0 auto;
+    order: -1; /* Force canvas to TOP regardless of HTML order */
+    flex: 0 0 45vh;
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -549,6 +550,7 @@ body {
 
   /* ── PLAYBACK BAR (InShot style) ── */
   .inshot-playbar {
+    order: 1;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -560,6 +562,7 @@ body {
 
   /* ── TOOLS BAR (horizontal scroll, InShot style) ── */
   .inshot-tools {
+    order: 0;
     display: flex;
     background: #fff;
     padding: 6px 8px;
@@ -632,6 +635,7 @@ body {
 
   /* ── TIMELINE (InShot bottom) ── */
   .inshot-timeline {
+    order: 2;
     background: #fff;
     border-top: 1px solid #ececec;
     padding: 8px 12px 10px;
@@ -904,7 +908,7 @@ body {
   </div>
 
   <!-- ── MOBILE PANEL WRAPPER ── -->
-  <div id="mobile-panel-wrap" style="display:none;flex:1;flex-direction:column;overflow:hidden;">
+  <div id="mobile-panel-wrap" style="display:none;flex:1;flex-direction:column;overflow:hidden;order:3;">
   </div>
 
   <!-- LEFT SIDEBAR -->
@@ -4473,23 +4477,37 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   function initMobile(){
     if(!IS_MOBILE()) return;
 
-    // Show mobile UI elements
-    document.getElementById('mobileBottomNav').style.display = 'flex';
-    document.getElementById('inshot-tools-bar').style.display = 'flex';
-    document.getElementById('inshot-playbar').style.display = 'flex';
-    document.getElementById('inshot-timeline').style.display = 'block';
-    document.getElementById('mobileBackBtn').style.display = '';
-    document.getElementById('mobile-panel-wrap').style.display = 'flex';
+    // Rebuild mobile layout: canvas TOP → tools → playbar → timeline → panel → bottom nav
+    const mainLayout = document.querySelector('.main-layout');
+    const canvas     = document.querySelector('.canvas-area');
+    const toolsBar   = document.getElementById('inshot-tools-bar');
+    const playbar    = document.getElementById('inshot-playbar');
+    const timeline   = document.getElementById('inshot-timeline');
+    const panelWrap  = document.getElementById('mobile-panel-wrap');
 
-    // Move sidebar into mobile panel wrap
-    const wrap = document.getElementById('mobile-panel-wrap');
+    mainLayout.style.flexDirection = 'column';
+    mainLayout.style.overflow = 'hidden';
+    mainLayout.style.height = '100%';
+
+    // Insert in correct visual order
+    mainLayout.insertBefore(canvas,   mainLayout.firstChild);
+    mainLayout.insertBefore(toolsBar, canvas.nextSibling);
+    mainLayout.insertBefore(playbar,  toolsBar.nextSibling);
+    mainLayout.insertBefore(timeline, playbar.nextSibling);
+
+    // Move sidebar into panel wrap (goes last)
     const sidebar = document.querySelector('.sidebar');
-    wrap.appendChild(sidebar);
+    panelWrap.appendChild(sidebar);
 
-    // Add bottom padding for fixed nav
+    // Show all mobile elements
+    document.getElementById('mobileBottomNav').style.display = 'flex';
+    toolsBar.style.display = 'flex';
+    playbar.style.display  = 'flex';
+    timeline.style.display = 'block';
+    document.getElementById('mobileBackBtn').style.display = '';
+    panelWrap.style.display = 'flex';
+
     document.body.style.paddingBottom = '54px';
-
-    // Set editor view default
     mobileGoView('editor', document.getElementById('mbn-editor'));
   }
 
