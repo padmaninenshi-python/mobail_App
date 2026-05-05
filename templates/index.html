@@ -43,9 +43,8 @@ body {
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   display: flex; flex-direction: column;
-  height: 100vh;
-  height: 100dvh;
-  overflow: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 /* ── TOP NAVBAR ────────────────────────────────────────────── */
@@ -496,34 +495,30 @@ body {
   .nav-right .btn span { display: none; }
   .nav-right .btn { padding: 8px 12px; min-width: 40px; }
 
-  /* ── MAIN LAYOUT: stacked full screen ── */
+  /* ── MAIN LAYOUT: natural scroll, no clipping ── */
   .main-layout {
     flex: 1;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
+    overflow: visible;
     position: relative;
     background: #fff;
-    min-height: 0;
-    height: 100%;
   }
 
-  /* ── CANVAS AREA: video preview zone — ORDER-1 so it always shows on TOP ── */
+  /* ── CANVAS AREA: full width preview, natural height ── */
   .canvas-area {
-    order: -1; /* Force canvas to TOP regardless of HTML order */
-    flex: 0 0 45vh;
+    order: -1;
     display: flex;
     flex-direction: column;
     align-items: stretch;
     justify-content: stretch;
     background: #1a1a1a;
     padding: 0;
-    gap: 0;
-    position: relative;
     width: 100%;
-    height: 45vh;
+    height: 52vw;
     min-height: 220px;
     overflow: hidden;
+    flex-shrink: 0;
   }
   .canvas-area::before { display: none; }
   .canvas-label { display: none; }
@@ -623,23 +618,15 @@ body {
   /* ── SIDEBAR: full-screen panel ── */
   .sidebar {
     width: 100%;
-    flex: 1;
     border-right: none;
-    overflow: hidden;
+    overflow: visible;
     background: #fff;
-    display: flex;
-    flex-direction: column;
-    min-height: 0;
+    display: block;
   }
   .sidebar-body {
     padding: 14px;
-    overflow-y: auto;
-    overflow-x: hidden;
-    -webkit-overflow-scrolling: touch;
-    scroll-behavior: smooth;
-    padding-bottom: 100px;
-    flex: 1;
-    min-height: 0;
+    overflow: visible;
+    padding-bottom: 120px;
   }
   .sidebar-header { padding: 12px 14px 10px; }
   .sidebar-header h3 { font-size: 14px; }
@@ -718,7 +705,7 @@ body {
     height: 54px;
     background: #fff;
     border-top: 1px solid #ececec;
-    position: fixed;
+    position: sticky;
     bottom: 0; left: 0; right: 0;
     z-index: 500;
     align-items: stretch;
@@ -922,7 +909,7 @@ body {
   </div>
 
   <!-- ── MOBILE PANEL WRAPPER ── -->
-  <div id="mobile-panel-wrap" style="display:none;flex:1;flex-direction:column;overflow:hidden;order:3;min-height:0;height:0;">
+  <div id="mobile-panel-wrap" style="display:none;flex-direction:column;order:3;">
   </div>
 
   <!-- LEFT SIDEBAR -->
@@ -4491,57 +4478,36 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   function initMobile(){
     if(!IS_MOBILE()) return;
 
-    // Rebuild mobile layout: canvas TOP → tools → playbar → timeline → panel → bottom nav
+    // Reorder DOM: canvas TOP → tools → playbar → timeline → panel (sidebar)
     const mainLayout = document.querySelector('.main-layout');
     const canvas     = document.querySelector('.canvas-area');
     const toolsBar   = document.getElementById('inshot-tools-bar');
     const playbar    = document.getElementById('inshot-playbar');
     const timeline   = document.getElementById('inshot-timeline');
     const panelWrap  = document.getElementById('mobile-panel-wrap');
+    const sidebar    = document.querySelector('.sidebar');
 
-    mainLayout.style.flexDirection = 'column';
-    mainLayout.style.overflow = 'hidden';
-    mainLayout.style.height = '100%';
+    // Move sidebar into panel wrap
+    panelWrap.appendChild(sidebar);
 
-    // Insert in correct visual order
+    // Insert in correct visual order inside main-layout
     mainLayout.insertBefore(canvas,   mainLayout.firstChild);
     mainLayout.insertBefore(toolsBar, canvas.nextSibling);
     mainLayout.insertBefore(playbar,  toolsBar.nextSibling);
     mainLayout.insertBefore(timeline, playbar.nextSibling);
+    // panelWrap already last
 
-    // Move sidebar into panel wrap (goes last)
-    const sidebar = document.querySelector('.sidebar');
-    panelWrap.appendChild(sidebar);
-
-    // Show all mobile elements
+    // Show elements
     document.getElementById('mobileBottomNav').style.display = 'flex';
-    toolsBar.style.display = 'flex';
-    playbar.style.display  = 'flex';
-    timeline.style.display = 'block';
+    toolsBar.style.display  = 'flex';
+    playbar.style.display   = 'flex';
+    timeline.style.display  = 'block';
+    panelWrap.style.display = 'block';
     document.getElementById('mobileBackBtn').style.display = '';
-    panelWrap.style.display = 'flex';
-    panelWrap.style.flex = '1';
-    panelWrap.style.minHeight = '0';
-    panelWrap.style.height = 'auto';
-    panelWrap.style.overflowY = 'hidden';
 
-    // Make sidebar fill panelWrap
-    sidebar.style.flex = '1';
-    sidebar.style.minHeight = '0';
-    sidebar.style.overflow = 'hidden';
-    sidebar.style.display = 'flex';
-    sidebar.style.flexDirection = 'column';
+    // Whole page scrolls — bottom nav is sticky
+    document.body.style.paddingBottom = '70px';
 
-    // Make all sidebar-body elements scrollable
-    document.querySelectorAll('.sidebar-body').forEach(function(el){
-      el.style.flex = '1';
-      el.style.minHeight = '0';
-      el.style.overflowY = 'auto';
-      el.style.webkitOverflowScrolling = 'touch';
-      el.style.paddingBottom = '80px';
-    });
-
-    document.body.style.paddingBottom = '0';
     mobileGoView('editor', document.getElementById('mbn-editor'));
   }
 
@@ -4549,48 +4515,28 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
     if(!IS_MOBILE()) return;
     currentView = view;
 
-    const canvas = document.querySelector('.canvas-area');
-    const wrap = document.getElementById('mobile-panel-wrap');
-    const playbar = document.getElementById('inshot-playbar');
+    const canvas   = document.querySelector('.canvas-area');
+    const wrap     = document.getElementById('mobile-panel-wrap');
+    const playbar  = document.getElementById('inshot-playbar');
     const timeline = document.getElementById('inshot-timeline');
+    const toolsBar = document.getElementById('inshot-tools-bar');
 
     if(view === 'preview'){
-      if(canvas){ canvas.style.display = 'flex'; canvas.style.flex = '1'; canvas.style.height = '100%'; canvas.style.alignItems = 'stretch'; }
-      if(wrap) wrap.style.display = 'none';
-      if(playbar) playbar.style.display = 'flex';
-      if(timeline) timeline.style.display = 'block';
-      document.getElementById('inshot-tools-bar').style.display = 'none';
+      // Full screen preview — hide everything except canvas
+      if(canvas){ canvas.style.height = '100vh'; canvas.style.position = 'fixed'; canvas.style.top = '0'; canvas.style.left = '0'; canvas.style.right = '0'; canvas.style.bottom = '0'; canvas.style.zIndex = '999'; }
+      if(wrap)     wrap.style.display     = 'none';
+      if(playbar)  playbar.style.display  = 'none';
+      if(timeline) timeline.style.display = 'none';
+      if(toolsBar) toolsBar.style.display = 'none';
+      document.getElementById('mobileBottomNav').style.zIndex = '1000';
     } else {
-      if(canvas){ canvas.style.display = 'flex'; canvas.style.flex = '0 0 42vh'; canvas.style.height = '42vh'; canvas.style.alignItems = 'stretch'; }
-      if(wrap){
-        wrap.style.display = 'flex';
-        wrap.style.flex = '1';
-        wrap.style.minHeight = '0';
-        wrap.style.overflowY = 'hidden';
-        wrap.style.flexDirection = 'column';
-      }
-      if(playbar) playbar.style.display = 'flex';
+      // Editor — natural scroll
+      if(canvas){ canvas.style.height = '52vw'; canvas.style.minHeight = '220px'; canvas.style.position = ''; canvas.style.top = ''; canvas.style.left = ''; canvas.style.right = ''; canvas.style.bottom = ''; canvas.style.zIndex = ''; }
+      if(wrap)     wrap.style.display     = 'block';
+      if(playbar)  playbar.style.display  = 'flex';
       if(timeline) timeline.style.display = 'block';
-      document.getElementById('inshot-tools-bar').style.display = 'flex';
-
-      // Force all sidebar-body to scroll properly
-      document.querySelectorAll('.sidebar-body').forEach(function(el){
-        el.style.flex = '1';
-        el.style.minHeight = '0';
-        el.style.overflowY = 'auto';
-        el.style.webkitOverflowScrolling = 'touch';
-        el.style.paddingBottom = '80px';
-        el.style.display = 'block';
-      });
-      // Sidebar itself
-      const sidebar = document.querySelector('.sidebar');
-      if(sidebar){
-        sidebar.style.flex = '1';
-        sidebar.style.minHeight = '0';
-        sidebar.style.overflow = 'hidden';
-        sidebar.style.display = 'flex';
-        sidebar.style.flexDirection = 'column';
-      }
+      if(toolsBar) toolsBar.style.display = 'flex';
+      document.getElementById('mobileBottomNav').style.zIndex = '500';
     }
 
     // Update bottom tabs
