@@ -37,11 +37,15 @@ html,body { height:100%; overflow:hidden; }
   100% { transform: translateX(0); }
 }
 
+html { height: 100%; }
 body {
   background: var(--bg);
   color: var(--text);
   font-family: 'DM Sans', sans-serif;
   display: flex; flex-direction: column;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
 }
 
 /* ── TOP NAVBAR ────────────────────────────────────────────── */
@@ -500,6 +504,8 @@ body {
     overflow: hidden;
     position: relative;
     background: #fff;
+    min-height: 0;
+    height: 100%;
   }
 
   /* ── CANVAS AREA: video preview zone — ORDER-1 so it always shows on TOP ── */
@@ -567,13 +573,16 @@ body {
     background: #fff;
     padding: 6px 8px;
     overflow-x: auto;
+    overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
     border-bottom: 1px solid #f0f0f0;
     flex-shrink: 0;
     gap: 0;
+    scroll-snap-type: x mandatory;
   }
   .inshot-tools::-webkit-scrollbar { display: none; }
+  .inshot-tool-btn { scroll-snap-align: start; }
   .inshot-tool-btn {
     display: flex;
     flex-direction: column;
@@ -620,12 +629,17 @@ body {
     background: #fff;
     display: flex;
     flex-direction: column;
+    min-height: 0;
   }
   .sidebar-body {
     padding: 14px;
     overflow-y: auto;
+    overflow-x: hidden;
     -webkit-overflow-scrolling: touch;
-    padding-bottom: 80px;
+    scroll-behavior: smooth;
+    padding-bottom: 100px;
+    flex: 1;
+    min-height: 0;
   }
   .sidebar-header { padding: 12px 14px 10px; }
   .sidebar-header h3 { font-size: 14px; }
@@ -908,7 +922,7 @@ body {
   </div>
 
   <!-- ── MOBILE PANEL WRAPPER ── -->
-  <div id="mobile-panel-wrap" style="display:none;flex:1;flex-direction:column;overflow:hidden;order:3;">
+  <div id="mobile-panel-wrap" style="display:none;flex:1;flex-direction:column;overflow:hidden;order:3;min-height:0;">
   </div>
 
   <!-- LEFT SIDEBAR -->
