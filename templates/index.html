@@ -54,7 +54,9 @@ body {
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 16px;
   padding: 0 20px;
-  position: relative; z-index: 100;
+  position: sticky;
+  top: 0;
+  z-index: 200;
 }
 .navbar-brand {
   font-family: 'Syne', sans-serif;
@@ -571,10 +573,14 @@ body {
     overflow-y: hidden;
     -webkit-overflow-scrolling: touch;
     scrollbar-width: none;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1.5px solid #f0f0f0;
     flex-shrink: 0;
     gap: 0;
     scroll-snap-type: x mandatory;
+    position: sticky;
+    top: 52px;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
   }
   .inshot-tools::-webkit-scrollbar { display: none; }
   .inshot-tool-btn { scroll-snap-align: start; }
@@ -699,16 +705,17 @@ body {
     font-size: 10px; color: #aaa; font-variant-numeric: tabular-nums;
   }
 
-  /* ── BOTTOM NAV BAR ── */
+  /* ── BOTTOM NAV BAR — fixed at bottom always ── */
   .mobile-bottom-nav {
     display: flex !important;
-    height: 54px;
+    height: 56px;
     background: #fff;
-    border-top: 1px solid #ececec;
-    position: sticky;
+    border-top: 1.5px solid #ececec;
+    position: fixed;
     bottom: 0; left: 0; right: 0;
-    z-index: 500;
+    z-index: 999;
     align-items: stretch;
+    box-shadow: 0 -2px 12px rgba(0,0,0,0.08);
   }
   .mbn-tab {
     flex: 1;
@@ -4505,8 +4512,10 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
     panelWrap.style.display = 'block';
     document.getElementById('mobileBackBtn').style.display = '';
 
-    // Whole page scrolls — bottom nav is sticky
+    // Whole page scrolls — bottom nav is fixed 56px
     document.body.style.paddingBottom = '70px';
+    document.body.style.overflowY = 'auto';
+    document.body.style.height = 'auto';
 
     mobileGoView('editor', document.getElementById('mbn-editor'));
   }
