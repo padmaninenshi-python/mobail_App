@@ -185,6 +185,40 @@ body {
 }
 .template-card.selected .template-selected-badge { display: flex; }
 
+/* ── CUSTOM TEMPLATE BUILDER ── */
+.custom-template-card {
+  border-radius: 10px; overflow: hidden; cursor: pointer;
+  border: 2px dashed var(--accent); transition: all .25s;
+  background: linear-gradient(135deg,rgba(109,74,252,.07),rgba(252,92,138,.07));
+  position: relative; grid-column: 1 / -1;
+}
+.custom-template-card:hover { background: linear-gradient(135deg,rgba(109,74,252,.14),rgba(252,92,138,.14)); transform: translateY(-2px); }
+.custom-template-card.selected { box-shadow: var(--glow); border-style: solid; }
+.custom-builder-panel {
+  display: none; padding: 14px; border-top: 1px solid var(--border);
+  background: var(--surface); border-radius: 0 0 10px 10px;
+}
+.custom-builder-panel.open { display: block; }
+.ctp-preview {
+  width: 100%; aspect-ratio: 9/16; border-radius: 8px; overflow: hidden;
+  position: relative; cursor: pointer; background: #0f0f1a;
+  display: flex; align-items: center; justify-content: center;
+}
+.ctp-preview canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+.cb-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.cb-full { grid-column: 1/-1; }
+.cb-label { font-size: 11px; font-weight: 600; color: var(--muted); margin-bottom: 4px; display: block; text-transform: uppercase; letter-spacing: .4px; }
+.cb-select, .cb-input { width: 100%; padding: 8px 10px; border-radius: 7px; border: 1px solid var(--border); background: var(--surface2); color: var(--text); font-size: 12px; outline: none; transition: border-color .2s; font-family: 'DM Sans',sans-serif; }
+.cb-select:focus, .cb-input:focus { border-color: var(--accent); }
+.cb-color-row { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; }
+.cb-swatch { width: 26px; height: 26px; border-radius: 5px; cursor: pointer; border: 2px solid transparent; transition: .15s; flex-shrink: 0; }
+.cb-swatch.active { border-color: #fff; transform: scale(1.12); }
+.cb-apply-btn { width: 100%; padding: 10px; border-radius: 8px; border: none; background: linear-gradient(135deg,var(--accent),var(--accent2)); color: white; font-size: 13px; font-weight: 700; cursor: pointer; margin-top: 4px; display: flex; align-items: center; justify-content: center; gap: 8px; }
+.cb-apply-btn:hover { filter: brightness(1.1); }
+.anim-chip { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); background: var(--surface2); color: var(--muted); font-size: 11px; cursor: pointer; transition: .15s; white-space: nowrap; }
+.anim-chip.active { background: var(--accent); color: white; border-color: var(--accent); }
+.anim-chips { display: flex; gap: 6px; flex-wrap: wrap; }
+
 /* ── UPLOAD ── */
 .drop-zone {
   border: 2px dashed var(--border); border-radius: var(--radius);
@@ -398,7 +432,6 @@ body {
     overflow: hidden; position: relative; background: #fff;
   }
 
-  /* PREVIEW — small dark strip at top */
   .canvas-area {
     order: -1;
     display: flex; flex-direction: column;
@@ -421,7 +454,6 @@ body {
     display: flex; flex-direction: column; align-items: center; justify-content: center;
   }
 
-  /* INSHOT TOOLS BAR */
   .inshot-tools {
     order: 0; display: flex; background: #fff;
     padding: 6px 8px; overflow-x: auto; overflow-y: hidden;
@@ -448,7 +480,6 @@ body {
   .itb-dot { position: absolute; top: -1px; right: -3px; width: 7px; height: 7px; background: #f5c518; border-radius: 50%; }
   .itb-label { font-size: 10px; color: #666; white-space: nowrap; font-weight: 500; }
 
-  /* SIDEBAR = scrollable panel */
   .sidebar {
     width: 100%; border-right: none;
     overflow-y: auto; overflow-x: hidden;
@@ -463,7 +494,6 @@ body {
   .sidebar-header { padding: 12px 14px 10px; }
   .sidebar-header h3 { font-size: 14px; }
 
-  /* NAV ARROW BAR — sticky at BOTTOM of the panel area */
   .nav-arrow-bar {
     width: 100%;
     border-right: none;
@@ -471,7 +501,7 @@ body {
     background: #fff;
     padding: 10px 14px 14px;
     position: sticky;
-    bottom: 0; /* NO bottom nav now, so 0 */
+    bottom: 0;
     z-index: 200;
     box-shadow: 0 -4px 16px rgba(0,0,0,0.06);
   }
@@ -524,7 +554,7 @@ body {
     <i class="fas fa-arrow-left"></i>
   </button>
   <span class="navbar-brand" style="display:flex;align-items:center;padding:0;background:transparent;">
-    <img src="data:image/png;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST0ZJTEUAAQEAAAHIAAAAAAQwAABtbnRyUkdCIFhZWiAH4AABAAEAAAAAAABhY3NwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAA9tYAAQAAAADTLQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAlkZXNjAAAA8AAAACRyWFlaAAABFAAAABRnWFlaAAABKAAAABRiWFlaAAABPAAAABR3dHB0AAABUAAAABRyVFJDAAABZAAAAChnVFJDAAABZAAAAChiVFJDAAABZAAAAChjcHJ0AAABjAAAADxtbHVjAAAAAAAAAAEAAAAMZW5VUwAAAAgAAAAcAHMAUgBHAEJYWVogAAAAAAAAb6IAADj1AAADkFhZWiAAAAAAAABimQAAt4UAABjaWFlaIAAAAAAAACSgAAAPhAAAts9YWVogAAAAAAAA9tYAAQAAAADTLXBhcmEAAAAAAAQAAAACZmYAAPKnAAANWQAAE9AAAApbAAAAAAAAAABtbHVjAAAAAAAAAAEAAAAMZW5VUwAAACAAAAAcAEcAbwBvAGcAbABlACAASQBuAGMALgAgADIAMAAxADb/2wBDAAUDBAQEAwUEBAQFBQUGBwwIBwcHBw8LCwkMEQ8SEhEPERETFhwXExQaFRERGCEYGh0dHx8fExciJCIeJBweHx7/wAARCADhAOEDASIAAhEBAxEB/8QAHQABAAICAwEBAAAAAAAAAAAAAAYHBAUCAwgBCf/EAEoQAAIBBAEDAQMHBAsRAQAAAAABAgMEBREGBxIhMRNBUQgUIjJhcYEVFpGyFyM3OEJUcnWCobEJGCQzUlVWdIOSk5SVtNHS4cL/xAAaAQEAAwEBAQAAAAAAAAAAAAAAAQIDBAUG/8QALxEBAAEDAwEGBAcBAQAAAAAAAAECAxEEEiExExRBUWGRcYGh8AUVIiMyQsEksf/aAAwDAQACEQMRAD8A9EdDuknGOlHGoY/D0I1shVgvn2QnH9tuJL9WO/SPovv8lhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADT8x4xguYcfuMDyPG0Mhj7hanSqx2k/dJfCS9U16M3AA84f3m3Sn+N8h/wCbj/6A9HgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABhZjK2OIto3F/W9lTlLsT7W/P4FK7lNumaq5xEJimapxDtv76zsKUat7c0reEpdqlUlpN/Aw1yLBNpLL2Tb8Je1RFeXyq8vtbePHou7o0KjdZt+zSlrx9bW/G/Q0uH4ZnYZW1ndWKhQjVi6jdWL1Hfnxs8DUfiuq7fbp7W6jj9WJmPeOHdb01rZm5VifJbAAPonAAAAAAAAABtJNtpJeW2CpflU8jvcD01+bWFWVGrk7lWs6kHqUafbKUtfeo6/E0s2pu1xRHipcri3TNU+DcZ7rT04wt7OzuuQwq1YNqfzajOtGLXr9KKa/rN9wznXFOYRn+b2YoXlSnHuqUfMasFvW3CWml+BXXRDpJxOnwPG5bNYm3yd/kbeNzOVxHujCM1uMYxfheGvPqTjC8B4pxLMXfJcDi1ZXMrSVOrSoyfs5x2pfVfo9r3HTeo01Oaac5j4YY26r04qqxhMQef6nVPrBeWTzGO6cKjjUu9KrTqTm4fH1i3+CJZ0+6xWfI+n2b5Hd42dvd4OjKrd2tKakppRbTg3rw+1+vpopXo7tMZ6/CU06m3VOP8WoDz7jurvVPk1F5HivAreriVU7e+TlUb16re4rf4Ej4b1Vzd31YqcF5Lh7TH1HCXsqlOpJuUu1TitP4x3+PgmrRXaYnpx6wU6micevot8FXdY+p1/w/kmD47g8ZbZHI5OXmFWo49iclGHp8Xv8AQdXUPnnPsbyZ4DifDPyrOlbU6ta7am6alLe4rWkvT3yKU6W5VET5+q1V+iJmPJawKP4F1l5BW57Q4dzjjkcXeXMlClOmpR1N/VTjLe0/RNM5816ycjo89veG8P4nHJX1pLtlKpNvu+im2ox9y36tl+5Xd23HhnrxhXvNvbn5LtBQeA61csxvM7LjvUDjFLG/PJwhGrSjKDh3PSlptqUd+umSzqhzvmuI5PT49w7iEsvUdrG4qXUlJ04d0pJR8aX8H3See/8AsokrwHRCuuVWXIeXcyv+QV7GrGrQpzi4x7ovaTbk/G/OlokVv0voUesdbqN+WKrq1N/4H7Fdq/aVS+tv4LfoXq1VrbNOf6zHEYjMypGnrzux4xPVXHyxkvypw96W++ut/wBKkTL5VST6NXbaTaubfX2ftiNx1c6ZUOoV1ia1fLVbD8mubioUlPv7nF+dta+r/Wbjqhw6lznh1bjta+qWUatSnP20IdzXZJS9Nr4HPRqLcRZzP8ZnPu2qtVTNzjr09lPVemVbnnSnhd9h8pRss1jrF+zjUbSqRct+q8xaaWnpnziHULqNxLqRjOD87VG/heVKdKNX6LqJTl2wmpR8NbXna2TDP9Gal3h8BRxHLchisjhbaVtTuqMWlUg5dz2oyTXp8dfYOD9F4YrltHlXJ+S3vI8nbtOhKsmowa3pvbbet7S3pM2nUWqqKornMc4jHMfNn2NyKommMTxmc8ey2wAeS9AAAAAAAAAAAAAAAAAAAAiua6d8MzPJIciymCoXeSiopVak5tPt9Nw32v8AFEqBamuqjmmcIqpirrAkkkkkkvRIAFUohm5WryuWqXN5UoVqNCm7btryi1LUvSKfnb17jsrZDJ1bW8lcOioW9ShTdL2b33S7G23v3Nsk07a2nWVadvSlVXpNwTa/E5OlSfdulB9zTluK8tejZ5s6GvNUxVjOfrnr8M/R0dtGI4++EXuc9k6UryjGlTnVsoVZ1fo+GvHs/f8AB7f8lnG3y+YrSo2yqUITqXKpKq1GT7XTlLzGMnp7XxJUqVJSnJU4d01qT7VuX3/E40ra3oxjGlQpU4xfclGCWn8fvHc784Vm3y+YrSo2yqUITqXKpKq1GT7XTlLzGMnp7XxJUqVJSnJU4d01qT7VuX3/ABONKWt6MY0aVOlGPclGCWl9wHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuHOlLW9GMaNKlGMO7aCilp/Bb8efuHGlLW9GMaNKlGMO7aCilp/Bb8efuA40pa3oxjRpUo" alt="Caryanams" style="height:100px;width:auto;max-width:150px;object-fit:contain;display:block;">
+    <img src="data:image/png;base64,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" alt="Caryanams" style="height:100px;width:auto;max-width:150px;object-fit:contain;display:block;">
   </span>
   <div class="step-tabs">
     <button class="step-tab active" data-step="1" onclick="goStep(1)"><span class="step-num">1</span> Templates</button>
@@ -574,6 +604,8 @@ body {
         <div class="ph-text">Select a template to start</div>
       </div>
       <iframe id="reelIframe" style="display:none;width:100%;height:100%;border:none;" allowfullscreen></iframe>
+      <!-- Custom template live canvas preview -->
+      <canvas id="customReelCanvas" style="display:none;width:100%;height:100%;position:absolute;inset:0;"></canvas>
       <button id="mobileFullscreenBtn" onclick="toggleMobileFullscreen()" style="display:none;position:absolute;bottom:10px;right:10px;z-index:50;background:rgba(0,0,0,0.55);border:none;border-radius:8px;padding:7px 9px;cursor:pointer;">
         <svg id="mfsIcon" width="18" height="18" fill="none" stroke="white" stroke-width="2" viewBox="0 0 24 24"><polyline points="15,3 21,3 21,9"/><polyline points="9,21 3,21 3,15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>
       </button>
@@ -593,7 +625,7 @@ body {
       <div class="sidebar-section active" id="sidebar-1">
         <div class="sidebar-header">
           <h3>🎬 Choose Template</h3>
-          <p>Pick a style for your reel</p>
+          <p>Pick a pre-made style or build your own</p>
         </div>
         <div class="sidebar-body">
           <div class="template-filter">
@@ -602,13 +634,130 @@ body {
             <button class="filter-btn" onclick="filterTemplates('Cinematic', this)">Cinematic</button>
             <button class="filter-btn" onclick="filterTemplates('PPT Style', this)">PPT</button>
             <button class="filter-btn" onclick="filterTemplates('Creative', this)">Creative</button>
+            <button class="filter-btn" onclick="filterTemplates('Custom', this)" style="border-color:var(--accent2);color:var(--accent2)">✨ Custom</button>
           </div>
+
           <div class="template-grid" id="templateGrid">
             <div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:30px">
               <i class="fas fa-spinner fa-spin" style="font-size:24px"></i>
               <p style="margin-top:10px;font-size:13px">Loading templates...</p>
             </div>
           </div>
+
+          <!-- ══ CUSTOM TEMPLATE BUILDER (always visible below grid) ══ -->
+          <div style="margin-top:14px">
+            <div class="custom-template-card" id="customTemplateCard" onclick="toggleCustomBuilder()">
+              <div style="padding:12px 14px;display:flex;align-items:center;gap:12px;">
+                <div style="width:42px;height:42px;border-radius:10px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;">✨</div>
+                <div style="flex:1;min-width:0;">
+                  <div style="font-size:13px;font-weight:700;color:var(--text);">Custom Template</div>
+                  <div style="font-size:11px;color:var(--muted);margin-top:2px;">Design your own — background, colors, text, animation</div>
+                </div>
+                <div style="flex-shrink:0;">
+                  <i class="fas fa-chevron-down" id="customBuilderChevron" style="color:var(--accent);font-size:13px;transition:transform .25s;"></i>
+                </div>
+              </div>
+              <div class="custom-builder-panel" id="customBuilderPanel" onclick="event.stopPropagation()">
+
+                <!-- Live Mini Preview -->
+                <div style="margin-bottom:14px;">
+                  <div class="cb-label">Live Preview</div>
+                  <div class="ctp-preview" id="ctpPreview">
+                    <canvas id="ctpCanvas" width="180" height="320"></canvas>
+                  </div>
+                </div>
+
+                <!-- Background -->
+                <div style="margin-bottom:12px;">
+                  <div class="cb-label">Background Style</div>
+                  <select class="cb-select" id="ctBgType" onchange="renderCustomPreview()">
+                    <option value="gradient">Gradient</option>
+                    <option value="solid">Solid Color</option>
+                    <option value="dark">Dark Cinematic</option>
+                    <option value="neon">Neon Glow</option>
+                    <option value="minimal">Minimal White</option>
+                    <option value="sunset">Sunset</option>
+                    <option value="forest">Forest</option>
+                    <option value="ocean">Ocean</option>
+                  </select>
+                </div>
+
+                <!-- Accent Color -->
+                <div style="margin-bottom:12px;">
+                  <div class="cb-label">Accent Color</div>
+                  <div class="cb-color-row">
+                    <div class="cb-swatch active" style="background:#6d4afc;" onclick="setCtAccent('#6d4afc',this)"></div>
+                    <div class="cb-swatch" style="background:#fc5c8a;" onclick="setCtAccent('#fc5c8a',this)"></div>
+                    <div class="cb-swatch" style="background:#00c9a7;" onclick="setCtAccent('#00c9a7',this)"></div>
+                    <div class="cb-swatch" style="background:#fcd34d;" onclick="setCtAccent('#fcd34d',this)"></div>
+                    <div class="cb-swatch" style="background:#ef4444;" onclick="setCtAccent('#ef4444',this)"></div>
+                    <div class="cb-swatch" style="background:#f97316;" onclick="setCtAccent('#f97316',this)"></div>
+                    <div class="cb-swatch" style="background:#0ea5e9;" onclick="setCtAccent('#0ea5e9',this)"></div>
+                    <input type="color" value="#6d4afc" id="ctAccentCustom" oninput="setCtAccent(this.value,null)" style="width:26px;height:26px;border:none;background:none;cursor:pointer;border-radius:5px;padding:0;">
+                  </div>
+                </div>
+
+                <!-- Layout -->
+                <div class="cb-row">
+                  <div>
+                    <div class="cb-label">Layout</div>
+                    <select class="cb-select" id="ctLayout" onchange="renderCustomPreview()">
+                      <option value="center">Centered</option>
+                      <option value="bottom">Text Bottom</option>
+                      <option value="top">Text Top</option>
+                      <option value="split">Split</option>
+                      <option value="overlay">Full Overlay</option>
+                    </select>
+                  </div>
+                  <div>
+                    <div class="cb-label">Font Style</div>
+                    <select class="cb-select" id="ctFont" onchange="renderCustomPreview()">
+                      <option value="bold">Bold</option>
+                      <option value="thin">Thin</option>
+                      <option value="italic">Italic</option>
+                      <option value="mono">Monospace</option>
+                      <option value="serif">Serif</option>
+                    </select>
+                  </div>
+                </div>
+
+                <!-- Overlay Opacity -->
+                <div style="margin-bottom:12px;">
+                  <div class="cb-label">Overlay Opacity</div>
+                  <div style="display:flex;align-items:center;gap:10px;">
+                    <input type="range" class="form-range" min="0" max="100" value="55" id="ctOpacity" oninput="document.getElementById('ctOpacityVal').textContent=this.value+'%';renderCustomPreview();">
+                    <span style="font-size:12px;color:var(--muted);min-width:34px;" id="ctOpacityVal">55%</span>
+                  </div>
+                </div>
+
+                <!-- Animation -->
+                <div style="margin-bottom:14px;">
+                  <div class="cb-label">Slide Animation</div>
+                  <div class="anim-chips" id="ctAnimChips">
+                    <button class="anim-chip active" onclick="setCtAnim('fade',this)">Fade</button>
+                    <button class="anim-chip" onclick="setCtAnim('slide',this)">Slide</button>
+                    <button class="anim-chip" onclick="setCtAnim('zoom',this)">Zoom</button>
+                    <button class="anim-chip" onclick="setCtAnim('flip',this)">Flip</button>
+                    <button class="anim-chip" onclick="setCtAnim('glitch',this)">Glitch</button>
+                    <button class="anim-chip" onclick="setCtAnim('bounce',this)">Bounce</button>
+                  </div>
+                </div>
+
+                <!-- Watermark / Brand name -->
+                <div style="margin-bottom:14px;">
+                  <div class="cb-label">Brand Name / Watermark</div>
+                  <input type="text" class="cb-input" id="ctBrand" placeholder="e.g. Caryanams" maxlength="30" oninput="renderCustomPreview()">
+                </div>
+
+                <!-- Apply button -->
+                <button class="cb-apply-btn" onclick="applyCustomTemplate()">
+                  <i class="fas fa-magic"></i> Use This Custom Template
+                </button>
+                <div id="customApplyStatus" style="font-size:11px;color:var(--accent);text-align:center;margin-top:8px;min-height:16px;"></div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
@@ -759,7 +908,7 @@ body {
       <div class="sidebar-section" id="sidebar-5">
         <div class="sidebar-header">
           <h3>🗣️ Voice</h3>
-          <p>AI voice ya apni awaaz record karo</p>
+          <p>Use AI voice or record your own</p>
         </div>
         <div class="sidebar-body">
           <div style="display:flex;gap:0;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:16px">
@@ -826,7 +975,7 @@ body {
             </div>
             <div class="form-group">
               <label class="form-label" id="voiceScriptLabel">📝 Script / Text</label>
-              <textarea class="form-textarea" id="ttsText" rows="5" placeholder="Hindi, Gujarati, Hinglish, English — koi bhi likho..."></textarea>
+              <textarea class="form-textarea" id="ttsText" rows="5" placeholder="Type your script in any language..."></textarea>
             </div>
             <div style="margin-bottom:12px">
               <button onclick="fillVoiceFromText()" style="width:100%;padding:9px;border-radius:8px;border:1px dashed var(--border);background:var(--surface2);color:var(--muted);font-size:12px;cursor:pointer;font-weight:500">
@@ -882,7 +1031,7 @@ body {
                   <i class="fas fa-microphone" id="recBtnIcon"></i>
                 </button>
               </div>
-              <div id="recStatus" style="font-size:12px;color:var(--muted);margin-top:10px;min-height:18px">Mic button dabao recording shuru karne ke liye</div>
+              <div id="recStatus" style="font-size:12px;color:var(--muted);margin-top:10px;min-height:18px">Press the mic button to start recording</div>
               <div id="recTimer" style="font-size:22px;font-weight:700;color:var(--text);margin-top:4px;display:none">0:00</div>
             </div>
             <div id="recClipList" style="display:flex;flex-direction:column;gap:8px;margin-bottom:12px"></div>
@@ -935,7 +1084,7 @@ body {
 
     </div><!-- /sidebar-inner -->
 
-    <!-- NAV ARROW BAR — always at bottom of sidebar -->
+    <!-- NAV ARROW BAR -->
     <div class="nav-arrow-bar" id="navArrowBar">
       <button class="btn btn-ghost arr-btn" onclick="goStep(currentStep-1)">
         <i class="fas fa-arrow-up"></i> Back
@@ -961,8 +1110,6 @@ body {
   <span class="toast-icon" id="toastIcon">✅</span>
   <span class="toast-text" id="toastText">Done!</span>
 </div>
-
-<!-- ✅ MOBILE BOTTOM NAV REMOVED — Back/Next buttons upar sidebar mein hain -->
 
 <!-- EXPORT BOTTOM SHEET -->
 <div id="exportSheet" style="display:none;position:fixed;inset:0;z-index:2000;background:rgba(0,0,0,0.4);backdrop-filter:blur(4px);align-items:flex-end;justify-content:center;" onclick="if(event.target===this)closeExportSheet()">
@@ -1036,26 +1183,37 @@ body {
 </div>
 
 <script>
-/* STATE */
+/* ══════════════════════════════════════════════════
+   STATE
+══════════════════════════════════════════════════ */
 const state = {
   currentStep: 1, templates: [], selectedTemplate: null, filterCat: 'all',
   images: [], sessionId: Math.random().toString(36).slice(2),
   music: null, userMusic: [], textColor: '#ffffff',
   format: 'mp4', quality: '1080p', exportType: 'reel', exportBlob: null,
-  voice: null, voiceType: 'female'
+  voice: null, voiceType: 'female',
+  customTemplate: {
+    bgType: 'gradient', accent: '#6d4afc', layout: 'center',
+    font: 'bold', opacity: 55, anim: 'fade', brand: ''
+  }
 };
 let currentStep = 1;
 
-/* INIT */
+/* ══════════════════════════════════════════════════
+   INIT
+══════════════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', async () => {
   await loadTemplates();
   checkPendingTemplate();
   loadBuiltinMusic();
   setupDragDrop();
   updateStepDots(1);
+  renderCustomPreview();
 });
 
-/* STEP NAVIGATION */
+/* ══════════════════════════════════════════════════
+   STEP NAVIGATION
+══════════════════════════════════════════════════ */
 function updateStepDots(n) {
   for (let i = 1; i <= 5; i++) {
     const d = document.getElementById('sd' + i);
@@ -1072,11 +1230,7 @@ function updateStepDots(n) {
   }
   const nextBtn = document.querySelector('.nav-arrow-bar .btn-primary');
   if (nextBtn) {
-    if (n >= 5) {
-      nextBtn.innerHTML = 'Export <i class="fas fa-download"></i>';
-    } else {
-      nextBtn.innerHTML = 'Next <i class="fas fa-arrow-down"></i>';
-    }
+    nextBtn.innerHTML = n >= 5 ? 'Export <i class="fas fa-download"></i>' : 'Next <i class="fas fa-arrow-down"></i>';
   }
   const backBtn = document.querySelector('.nav-arrow-bar .btn-ghost');
   if (backBtn) backBtn.style.opacity = n === 1 ? '0.4' : '1';
@@ -1112,6 +1266,7 @@ function goStep(n) {
 
 function checkImageCount() {
   if (!state.selectedTemplate) return 'ok';
+  if (state.selectedTemplate.id === 'custom') return 'ok';
   const limit = TEMPLATE_IMAGE_LIMITS[state.selectedTemplate.id] || 5;
   const total = state.images.length;
   if (total === 0 || total !== limit) return 'block';
@@ -1136,28 +1291,30 @@ function flashStepError(stepNum) {
   const limit = state.selectedTemplate ? (TEMPLATE_IMAGE_LIMITS[state.selectedTemplate.id] || 5) : 5;
   const total = state.images.length;
   let msg;
-  if (total === 0) msg = '🚫 Koi image nahi! ' + limit + ' images upload karo.';
-  else if (total > limit) msg = '🚫 ' + total + ' images hain — sirf ' + limit + ' chahiye. ' + (total - limit) + ' delete karo.';
-  else msg = '🚫 Sirf ' + total + ' hain — ' + limit + ' chahiye. ' + (limit - total) + ' aur add karo!';
+  if (total === 0) msg = '🚫 No images added! Please upload ' + limit + ' images.';
+  else if (total > limit) msg = '🚫 You have ' + total + ' images — only ' + limit + ' needed. Remove ' + (total - limit) + ' extra.';
+  else msg = '🚫 Only ' + total + ' added — ' + limit + ' required. Add ' + (limit - total) + ' more!';
   showImgWarning(msg, 'error');
-  showToast('🚫', total === 0 ? 'Pehle ' + limit + ' images upload karo!' : total > limit ? (total - limit) + ' extra delete karo!' : (limit - total) + ' aur images add karo!');
+  showToast('🚫', total === 0 ? 'Upload ' + limit + ' images first!' : total > limit ? 'Remove ' + (total - limit) + ' extra images!' : 'Add ' + (limit - total) + ' more images!');
   const box = document.getElementById('imgWarningBox');
   if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
-/* TEMPLATES */
+/* ══════════════════════════════════════════════════
+   TEMPLATES
+══════════════════════════════════════════════════ */
 async function loadTemplates() {
   try {
     const res = await fetch('/api/templates');
     if (!res.ok) throw new Error('Server error ' + res.status);
     const data = await res.json();
-    if (!Array.isArray(data)) throw new Error('Bad response');
+    if (!Array.isArray(data)) throw new Error('Invalid response');
     state.templates = data;
     renderTemplates();
     return true;
   } catch(e) {
     console.error('loadTemplates failed:', e);
-    document.getElementById('templateGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><i class="fas fa-exclamation-triangle" style="font-size:28px;color:#f59e0b;margin-bottom:10px;display:block"></i><div style="font-size:13px;font-weight:600;margin-bottom:6px">Templates load nahi hue</div><button onclick="loadTemplates()" style="margin-top:14px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px">🔄 Retry</button></div>';
+    document.getElementById('templateGrid').innerHTML = '<div style="grid-column:1/-1;text-align:center;padding:30px;color:var(--muted)"><i class="fas fa-exclamation-triangle" style="font-size:28px;color:#f59e0b;margin-bottom:10px;display:block"></i><div style="font-size:13px;font-weight:600;margin-bottom:6px">Templates failed to load</div><button onclick="loadTemplates()" style="margin-top:14px;padding:8px 20px;background:var(--accent);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:13px">🔄 Retry</button></div>';
     return false;
   }
 }
@@ -1183,7 +1340,11 @@ function checkPendingTemplate() {
 function renderTemplates() {
   const grid = document.getElementById('templateGrid');
   const list = state.templates.filter(t => t.active && (state.filterCat === 'all' || t.category === state.filterCat));
-  if (!list.length) { grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:30px">No templates found</div>'; return; }
+  if (!list.length && state.filterCat !== 'Custom') {
+    grid.innerHTML = '<div style="grid-column:1/-1;text-align:center;color:var(--muted);padding:30px">No templates found</div>';
+    return;
+  }
+  if (state.filterCat === 'Custom') { grid.innerHTML = ''; return; }
   grid.innerHTML = list.map(t => {
     const num = parseInt(t.id.replace('tem','')) || 0;
     const emoji = TEMPLATE_EMOJIS[num] || '🎬';
@@ -1197,14 +1358,20 @@ function filterTemplates(cat, btn) {
   document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderTemplates();
+  // If Custom filter is clicked, scroll to / expand custom builder
+  if (cat === 'Custom') {
+    const panel = document.getElementById('customBuilderPanel');
+    if (!panel.classList.contains('open')) toggleCustomBuilder();
+    setTimeout(() => document.getElementById('customTemplateCard').scrollIntoView({behavior:'smooth',block:'center'}), 200);
+  }
 }
 
 function selectTemplate(id) {
   const prevTemplate = state.selectedTemplate;
   const newTemplate = state.templates.find(t => t.id === id);
-  if (prevTemplate && prevTemplate.id !== id) {
+  if (prevTemplate && prevTemplate.id !== id && prevTemplate.id !== 'custom') {
     sessionStorage.setItem('pendingTemplateId', id);
-    showToast('🔄', 'Switching to "' + newTemplate.name + '"... refreshing!');
+    showToast('🔄', 'Switching to "' + newTemplate.name + '"...');
     setTimeout(() => { window.location.reload(); }, 700);
     return;
   }
@@ -1223,13 +1390,222 @@ function selectTemplate(id) {
 function loadTemplatePreview(id) {
   const iframe = document.getElementById('reelIframe');
   const ph = document.getElementById('reelPlaceholder');
+  const customCanvas = document.getElementById('customReelCanvas');
+  if (id === 'custom') {
+    iframe.style.display = 'none';
+    customCanvas.style.display = 'block';
+    ph.style.display = 'none';
+    renderCustomToMainCanvas();
+    return;
+  }
+  customCanvas.style.display = 'none';
   iframe.src = '/api/templates/' + id;
   iframe.style.display = 'block';
   ph.style.display = 'none';
   iframe.onload = () => { if (state.images.length) injectImagesToTemplate(); };
 }
 
-/* IMAGES */
+/* ══════════════════════════════════════════════════
+   CUSTOM TEMPLATE BUILDER
+══════════════════════════════════════════════════ */
+let _customBuilderOpen = false;
+
+function toggleCustomBuilder() {
+  _customBuilderOpen = !_customBuilderOpen;
+  const panel = document.getElementById('customBuilderPanel');
+  const chevron = document.getElementById('customBuilderChevron');
+  panel.classList.toggle('open', _customBuilderOpen);
+  chevron.style.transform = _customBuilderOpen ? 'rotate(180deg)' : '';
+  if (_customBuilderOpen) renderCustomPreview();
+}
+
+function setCtAccent(color, el) {
+  state.customTemplate.accent = color;
+  document.querySelectorAll('.cb-swatch').forEach(s => s.classList.remove('active'));
+  if (el) el.classList.add('active');
+  renderCustomPreview();
+}
+
+function setCtAnim(anim, btn) {
+  state.customTemplate.anim = anim;
+  document.querySelectorAll('.anim-chip').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+}
+
+function renderCustomPreview() {
+  const canvas = document.getElementById('ctpCanvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const ct = state.customTemplate;
+  ct.bgType = document.getElementById('ctBgType')?.value || ct.bgType;
+  ct.layout = document.getElementById('ctLayout')?.value || ct.layout;
+  ct.font = document.getElementById('ctFont')?.value || ct.font;
+  ct.opacity = parseInt(document.getElementById('ctOpacity')?.value) || ct.opacity;
+  ct.brand = document.getElementById('ctBrand')?.value || '';
+
+  // Background
+  const bgMap = {
+    gradient: ['#1a0a3e','#0f0f2a'],
+    solid: [ct.accent, ct.accent],
+    dark: ['#0a0a0a','#1a1a1a'],
+    neon: ['#0d001a','#001a0d'],
+    minimal: ['#f8f8f8','#ffffff'],
+    sunset: ['#ff6b35','#f7c59f'],
+    forest: ['#1a2f1a','#2d5a27'],
+    ocean: ['#003459','#00a8cc']
+  };
+  const [c1, c2] = bgMap[ct.bgType] || bgMap.gradient;
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, c1); grad.addColorStop(1, c2);
+  ctx.fillStyle = grad; ctx.fillRect(0, 0, W, H);
+
+  // Neon glow effect
+  if (ct.bgType === 'neon') {
+    const g = ctx.createRadialGradient(W/2, H/3, 0, W/2, H/3, W*0.7);
+    g.addColorStop(0, ct.accent + '55'); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+  }
+
+  // Overlay bar
+  const alpha = (ct.opacity / 100).toFixed(2);
+  const isLight = ct.bgType === 'minimal';
+  const overlayColor = isLight ? `rgba(0,0,0,${alpha})` : `rgba(0,0,0,${alpha * 0.7})`;
+  if (ct.layout === 'bottom' || ct.layout === 'overlay') {
+    const og = ctx.createLinearGradient(0, H - 80, 0, H);
+    og.addColorStop(0, 'transparent'); og.addColorStop(1, overlayColor);
+    ctx.fillStyle = og; ctx.fillRect(0, H - 80, W, 80);
+  } else if (ct.layout === 'top') {
+    const og = ctx.createLinearGradient(0, 0, 0, 80);
+    og.addColorStop(0, overlayColor); og.addColorStop(1, 'transparent');
+    ctx.fillStyle = og; ctx.fillRect(0, 0, W, 80);
+  }
+
+  // Accent bar
+  ctx.fillStyle = ct.accent;
+  ctx.fillRect(0, H - 4, W, 4);
+
+  // Sample text
+  const textColor = isLight ? '#111' : '#fff';
+  const fontStyles = {bold:'bold 14px',thin:'300 13px',italic:'italic 14px',mono:'bold 13px "Courier New"',serif:'bold 14px Georgia'};
+  const fs = fontStyles[ct.font] || fontStyles.bold;
+  ctx.fillStyle = textColor; ctx.textAlign = 'center'; ctx.shadowBlur = 6; ctx.shadowColor = 'rgba(0,0,0,0.5)';
+  let ty = ct.layout === 'top' ? 30 : (ct.layout === 'center' ? H/2 - 10 : H - 50);
+  ctx.font = fs + ' sans-serif';
+  ctx.fillText('Product Name', W/2, ty);
+  ctx.fillStyle = ct.accent; ctx.font = 'bold 11px sans-serif';
+  ctx.fillText('₹ Price', W/2, ty + 18);
+  ctx.shadowBlur = 0;
+
+  // Brand watermark
+  if (ct.brand) {
+    ctx.fillStyle = 'rgba(255,255,255,0.5)'; ctx.font = '9px sans-serif'; ctx.textAlign = 'right';
+    ctx.fillText(ct.brand, W - 6, H - 8);
+  }
+
+  // Accent corner dot
+  ctx.beginPath(); ctx.arc(W - 12, 12, 5, 0, Math.PI * 2);
+  ctx.fillStyle = ct.accent; ctx.fill();
+}
+
+function renderCustomToMainCanvas() {
+  const canvas = document.getElementById('customReelCanvas');
+  if (!canvas) return;
+  const rf = document.getElementById('reelFrame');
+  canvas.width = rf.offsetWidth || 260;
+  canvas.height = rf.offsetHeight || 462;
+  const ctx = canvas.getContext('2d');
+  const W = canvas.width, H = canvas.height;
+  const ct = state.customTemplate;
+
+  const bgMap = {
+    gradient:['#1a0a3e','#0f0f2a'],solid:[ct.accent,ct.accent],dark:['#0a0a0a','#1a1a1a'],
+    neon:['#0d001a','#001a0d'],minimal:['#f8f8f8','#ffffff'],sunset:['#ff6b35','#f7c59f'],
+    forest:['#1a2f1a','#2d5a27'],ocean:['#003459','#00a8cc']
+  };
+  const [c1,c2]=bgMap[ct.bgType]||bgMap.gradient;
+  const grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,c1);grad.addColorStop(1,c2);
+  ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+
+  if(ct.bgType==='neon'){const g=ctx.createRadialGradient(W/2,H/3,0,W/2,H/3,W);g.addColorStop(0,ct.accent+'44');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);}
+
+  // Draw user images if any
+  if (state.images.length) {
+    const img = new Image();
+    img.src = state.images[0].url;
+    img.onload = () => {
+      const alpha = ct.opacity/100;
+      const sc = Math.max(W/img.naturalWidth,H/img.naturalHeight);
+      const sw=img.naturalWidth*sc,sh=img.naturalHeight*sc;
+      ctx.globalAlpha = alpha; ctx.drawImage(img,(W-sw)/2,(H-sh)/2,sw,sh); ctx.globalAlpha=1;
+      _drawCustomOverlay(ctx,W,H,ct);
+    };
+  } else { _drawCustomOverlay(ctx,W,H,ct); }
+}
+
+function _drawCustomOverlay(ctx,W,H,ct){
+  const isLight=ct.bgType==='minimal';
+  const textColor=isLight?'#111':'#fff';
+  const title=document.getElementById('textTitle')?.value||'Product Name';
+  const price=document.getElementById('textPrice')?.value||'';
+  const sub=document.getElementById('textSub')?.value||'';
+
+  ctx.fillStyle=ct.accent;ctx.fillRect(0,H-5,W,5);
+
+  const ovg=ctx.createLinearGradient(0,H-160,0,H);ovg.addColorStop(0,'transparent');ovg.addColorStop(1,'rgba(0,0,0,0.8)');ctx.fillStyle=ovg;ctx.fillRect(0,H-160,W,160);
+
+  let ty=ct.layout==='top'?60:(ct.layout==='center'?H/2:H-90);
+  ctx.textAlign='center';ctx.shadowBlur=8;ctx.shadowColor='rgba(0,0,0,0.7)';
+  ctx.fillStyle=textColor;
+  const fontStyles={bold:'bold 22px',thin:'300 20px',italic:'italic 22px',mono:'bold 18px "Courier New"',serif:'bold 22px Georgia'};
+  ctx.font=(fontStyles[ct.font]||fontStyles.bold)+' sans-serif';
+  ctx.fillText(title,W/2,ty);
+  if(price){ctx.fillStyle=ct.accent;ctx.font='bold 18px sans-serif';ctx.fillText(price,W/2,ty+28);}
+  if(sub){ctx.fillStyle='rgba(255,255,255,0.75)';ctx.font='14px sans-serif';ctx.fillText(sub,W/2,ty+(price?52:28));}
+  ctx.shadowBlur=0;
+  if(ct.brand){ctx.fillStyle='rgba(255,255,255,0.45)';ctx.font='11px sans-serif';ctx.textAlign='right';ctx.fillText(ct.brand,W-10,H-12);}
+}
+
+function applyCustomTemplate() {
+  // Read all current values
+  state.customTemplate.bgType = document.getElementById('ctBgType').value;
+  state.customTemplate.layout = document.getElementById('ctLayout').value;
+  state.customTemplate.font = document.getElementById('ctFont').value;
+  state.customTemplate.opacity = parseInt(document.getElementById('ctOpacity').value);
+  state.customTemplate.brand = document.getElementById('ctBrand').value;
+
+  // Set as selected template
+  state.selectedTemplate = { id: 'custom', name: 'Custom Template', category: 'Custom' };
+
+  // Update custom card UI
+  document.getElementById('customTemplateCard').classList.add('selected');
+  document.getElementById('customApplyStatus').textContent = '✅ Custom template applied!';
+
+  // Show main canvas
+  const iframe = document.getElementById('reelIframe');
+  const ph = document.getElementById('reelPlaceholder');
+  const customCanvas = document.getElementById('customReelCanvas');
+  iframe.style.display = 'none'; ph.style.display = 'none';
+  customCanvas.style.display = 'block';
+  renderCustomToMainCanvas();
+
+  showToast('✨', 'Custom template applied! Proceed to Step 2.');
+  updateSummary();
+
+  setTimeout(() => {
+    document.getElementById('customApplyStatus').textContent = '';
+    goStep(2);
+  }, 1200);
+
+  if (window.innerWidth <= 768) {
+    const btn = document.getElementById('mobileFullscreenBtn');
+    if (btn) btn.style.display = 'block';
+  }
+}
+
+/* ══════════════════════════════════════════════════
+   IMAGES
+══════════════════════════════════════════════════ */
 function setupDragDrop() {
   const dz = document.getElementById('dropZone');
   ['dragenter','dragover'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('dragover'); }));
@@ -1242,11 +1618,12 @@ function processImages(files) {
   imgs.forEach(f => { const url = URL.createObjectURL(f); state.images.push({ name: f.name, url, file: f }); });
   renderImageGrid(); updateSummary(); injectImagesToTemplate();
   if (state.selectedTemplate) {
+    if (state.selectedTemplate.id === 'custom') { renderCustomToMainCanvas(); return; }
     const limit = TEMPLATE_IMAGE_LIMITS[state.selectedTemplate.id] || 5;
     const total = state.images.length;
-    if (total > limit) showImgWarning('⚠️ ' + total + ' images added — template works best with ' + limit + '.', 'warn');
+    if (total > limit) showImgWarning('⚠️ ' + total + ' images added — this template works best with ' + limit + '.', 'warn');
     else if (total === limit) showImgWarning('✅ Perfect! ' + total + '/' + limit + ' images — ideal for this template.', 'ok');
-    else showImgWarning('📸 ' + total + '/' + limit + ' images. Add ' + (limit - total) + ' more for best results.', 'info');
+    else showImgWarning('📸 ' + total + '/' + limit + ' images added. Add ' + (limit - total) + ' more for best results.', 'info');
   }
 }
 function showImgWarning(msg, type) {
@@ -1265,10 +1642,11 @@ function renderImageGrid() {
 function deleteImage(i) {
   state.images.splice(i, 1); renderImageGrid(); injectImagesToTemplate(); updateSummary();
   if (state.selectedTemplate) {
+    if (state.selectedTemplate.id === 'custom') { renderCustomToMainCanvas(); return; }
     const limit = TEMPLATE_IMAGE_LIMITS[state.selectedTemplate.id] || 5;
     const total = state.images.length;
     if (total === 0) { const box = document.getElementById('imgWarningBox'); if (box) box.remove(); }
-    else if (total > limit) showImgWarning('⚠️ ' + total + ' images — delete ' + (total - limit) + ' more.', 'warn');
+    else if (total > limit) showImgWarning('⚠️ ' + total + ' images — remove ' + (total - limit) + ' more.', 'warn');
     else if (total === limit) showImgWarning('✅ Perfect! ' + total + '/' + limit + '.', 'ok');
     else showImgWarning('📸 ' + total + '/' + limit + ' — add ' + (limit - total) + ' more.', 'info');
   }
@@ -1279,6 +1657,7 @@ function clearImages() {
 }
 function injectImagesToTemplate() {
   if (!state.selectedTemplate || !state.images.length) return;
+  if (state.selectedTemplate.id === 'custom') { renderCustomToMainCanvas(); return; }
   const iframe = document.getElementById('reelIframe');
   if (!iframe) return;
   const urls = state.images.map(img => img.url);
@@ -1291,7 +1670,9 @@ function injectImagesToTemplate() {
   } catch(e) {}
 }
 
-/* TEXT OVERLAY */
+/* ══════════════════════════════════════════════════
+   TEXT OVERLAY
+══════════════════════════════════════════════════ */
 function updateOverlay() {
   const title = document.getElementById('textTitle').value;
   const price = document.getElementById('textPrice').value;
@@ -1308,12 +1689,10 @@ function updateOverlay() {
   const bg = document.getElementById('textBg').value;
   if (title || price || sub) {
     badge.style.display = 'block';
-    badge.style.bottom = pos === 'bottom' ? '40px' : 'auto';
-    badge.style.top = pos === 'top' ? '30px' : (pos === 'center' ? '50%' : 'auto');
-    badge.style.transform = pos === 'center' ? 'translateY(-50%)' : '';
     const bgStyles = { none:'', dark:'background:linear-gradient(transparent,rgba(0,0,0,0.8));padding-top:30px', blur:'background:rgba(0,0,0,0.5);backdrop-filter:blur(10px);padding:10px;border-radius:8px', solid:'background:rgba(0,0,0,0.7);padding:10px;border-radius:0' };
     badge.style.cssText = 'display:block;position:absolute;' + (pos==='bottom'?'bottom:40px':pos==='top'?'top:30px':'top:50%;transform:translateY(-50%)') + ';left:0;right:0;text-align:center;pointer-events:none;padding:0 10px;z-index:10;' + (bgStyles[bg] || '');
   } else { badge.style.display = 'none'; }
+  if (state.selectedTemplate?.id === 'custom') renderCustomToMainCanvas();
 }
 function setTextColor(color, el) {
   state.textColor = color;
@@ -1322,7 +1701,9 @@ function setTextColor(color, el) {
   document.getElementById('ol-title').style.color = color;
 }
 
-/* MUSIC */
+/* ══════════════════════════════════════════════════
+   MUSIC
+══════════════════════════════════════════════════ */
 function switchMusicTab(tab) {
   const isBuiltin = tab === 'builtin';
   document.getElementById('mpanel-builtin').style.display = isBuiltin ? 'block' : 'none';
@@ -1404,7 +1785,9 @@ function removeMusicSelection() {
 }
 function fmtTime(sec) { if (isNaN(sec) || sec < 0) return '0:00'; const m = Math.floor(sec / 60), s = Math.floor(sec % 60); return m + ':' + String(s).padStart(2,'0'); }
 
-/* EXPORT STATE */
+/* ══════════════════════════════════════════════════
+   EXPORT
+══════════════════════════════════════════════════ */
 const esState = { res: '1080p', fps: '30fps', fmt: 'MP4' };
 function openExportSheet() { updateEsSize(); const sheet = document.getElementById('exportSheet'); sheet.style.display = 'flex'; requestAnimationFrame(() => { document.getElementById('exportSheetInner').style.transform = 'translateY(0)'; }); }
 function closeExportSheet() { document.getElementById('exportSheetInner').style.transform = 'translateY(100%)'; setTimeout(() => { document.getElementById('exportSheet').style.display = 'none'; }, 350); }
@@ -1442,7 +1825,7 @@ async function startExportConvert() {
   const sz = (mp4Blob.size/1024/1024).toFixed(1); const di = document.getElementById('doneFileSize'); if (di) di.textContent = sz+'M · '+(state.format||'mp4').toUpperCase()+' · '+esState.res+' · '+esState.fps;
   const chosenFmt = (state.format||'mp4').toLowerCase(); const ext = chosenFmt==='webm'?'.webm':'.mp4';
   triggerDownload(mp4Blob, 'caryanams_reel'+ext);
-  showToast('✅', 'Video download ho raha hai!');
+  showToast('✅', 'Video download started!');
   await sleep(300); document.getElementById('exportPhase2').style.display='none'; document.getElementById('exportPhase3').style.display=''; updateEsSize();
 }
 
@@ -1452,6 +1835,11 @@ async function buildFallbackMP4() {
   const textColor=state.textColor||'#ffffff'; const fontSize=parseInt(document.getElementById('fontSize')?.value)||20;
   const loadedImgs = await Promise.all(state.images.map(imgObj=>new Promise(res=>{const img=new Image();img.crossOrigin='anonymous';img.onload=()=>res(img);img.onerror=()=>res(null);img.src=imgObj.url;}))).then(arr=>arr.filter(Boolean));
   const canvas=document.createElement('canvas'); canvas.width=W; canvas.height=H; const ctx=canvas.getContext('2d');
+
+  // If custom template, use its style
+  const isCustom = state.selectedTemplate?.id === 'custom';
+  const ct = state.customTemplate;
+
   const mimeType=['video/webm;codecs=vp9','video/webm;codecs=vp8','video/webm'].find(m=>MediaRecorder.isTypeSupported(m))||'video/webm';
   const exportAudioCtx=new (window.AudioContext||window.webkitAudioContext)(); const exportDest=exportAudioCtx.createMediaStreamDestination(); await exportAudioCtx.resume();
   const silentGain=exportAudioCtx.createGain(); silentGain.gain.value=0; silentGain.connect(exportAudioCtx.destination);
@@ -1471,10 +1859,23 @@ async function buildFallbackMP4() {
     function drawNextFrame(){
       if(frame>=totalFrames){if(recorder.state!=='inactive')recorder.stop();return;}
       const elapsed=frame/fps; const imgIdx=loadedImgs.length>0?Math.min(Math.floor(frame/perImg),loadedImgs.length-1):-1;
-      if(imgIdx>=0&&loadedImgs[imgIdx]){const img=loadedImgs[imgIdx];const scale=Math.max(W/img.naturalWidth,H/img.naturalHeight);const sw=img.naturalWidth*scale;const sh=img.naturalHeight*scale;const sx=(W-sw)/2;const sy=(H-sh)/2;ctx.drawImage(img,sx,sy,sw,sh);const vig=ctx.createRadialGradient(W/2,H/2,H*0.2,W/2,H/2,H*0.8);vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);}
-      else{const grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#0f0f2a');grad.addColorStop(0.5,'#1a0a3e');grad.addColorStop(1,'#0a0a1a');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);const glow=ctx.createRadialGradient(W/2+Math.sin(elapsed*0.8)*40,H/2+Math.cos(elapsed*0.6)*60,0,W/2,H/2,160);glow.addColorStop(0,'rgba(109,74,252,0.35)');glow.addColorStop(1,'rgba(109,74,252,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);}
-      if(loadedImgs.length>1){const frameInSlide=frame%perImg;const flashDur=Math.min(8,perImg*0.15);if(frameInSlide<flashDur){const alpha=1-(frameInSlide/flashDur);ctx.fillStyle='rgba(255,255,255,'+alpha*0.7+')';ctx.fillRect(0,0,W,H);}}
-      if(titleText||priceText||subText){const barGrad=ctx.createLinearGradient(0,H-160,0,H);barGrad.addColorStop(0,'rgba(0,0,0,0)');barGrad.addColorStop(1,'rgba(0,0,0,0.82)');ctx.fillStyle=barGrad;ctx.fillRect(0,H-160,W,160);let y=H-110;ctx.textAlign='center';ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=8;if(titleText){ctx.fillStyle=textColor;ctx.font='bold '+(fontSize+2)+'px "Segoe UI",sans-serif';ctx.fillText(titleText,W/2,y);y+=fontSize+10;}if(priceText){ctx.fillStyle='#fcd34d';ctx.font='bold '+Math.round(fontSize*0.9)+'px "Segoe UI",sans-serif';ctx.fillText(priceText,W/2,y);y+=fontSize;}if(subText){ctx.fillStyle='rgba(255,255,255,0.75)';ctx.font=Math.round(fontSize*0.7)+'px "Segoe UI",sans-serif';ctx.fillText(subText,W/2,y);}ctx.shadowBlur=0;}
+
+      if (isCustom) {
+        // Custom template rendering
+        const bgMap={gradient:['#1a0a3e','#0f0f2a'],solid:[ct.accent,ct.accent],dark:['#0a0a0a','#1a1a1a'],neon:['#0d001a','#001a0d'],minimal:['#f8f8f8','#ffffff'],sunset:['#ff6b35','#f7c59f'],forest:['#1a2f1a','#2d5a27'],ocean:['#003459','#00a8cc']};
+        const [c1,c2]=bgMap[ct.bgType]||bgMap.gradient;
+        const grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,c1);grad.addColorStop(1,c2);ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);
+        if(imgIdx>=0&&loadedImgs[imgIdx]){const img=loadedImgs[imgIdx];const sc=Math.max(W/img.naturalWidth,H/img.naturalHeight);const sw=img.naturalWidth*sc,sh=img.naturalHeight*sc;ctx.globalAlpha=ct.opacity/100;ctx.drawImage(img,(W-sw)/2,(H-sh)/2,sw,sh);ctx.globalAlpha=1;}
+        ctx.fillStyle=ct.accent;ctx.fillRect(0,H-5,W,5);
+        const og=ctx.createLinearGradient(0,H-160,0,H);og.addColorStop(0,'transparent');og.addColorStop(1,'rgba(0,0,0,0.8)');ctx.fillStyle=og;ctx.fillRect(0,H-160,W,160);
+      } else {
+        if(imgIdx>=0&&loadedImgs[imgIdx]){const img=loadedImgs[imgIdx];const scale=Math.max(W/img.naturalWidth,H/img.naturalHeight);const sw=img.naturalWidth*scale;const sh=img.naturalHeight*scale;const sx=(W-sw)/2;const sy=(H-sh)/2;ctx.drawImage(img,sx,sy,sw,sh);const vig=ctx.createRadialGradient(W/2,H/2,H*0.2,W/2,H/2,H*0.8);vig.addColorStop(0,'rgba(0,0,0,0)');vig.addColorStop(1,'rgba(0,0,0,0.55)');ctx.fillStyle=vig;ctx.fillRect(0,0,W,H);}
+        else{const grad=ctx.createLinearGradient(0,0,0,H);grad.addColorStop(0,'#0f0f2a');grad.addColorStop(0.5,'#1a0a3e');grad.addColorStop(1,'#0a0a1a');ctx.fillStyle=grad;ctx.fillRect(0,0,W,H);const glow=ctx.createRadialGradient(W/2+Math.sin(elapsed*0.8)*40,H/2+Math.cos(elapsed*0.6)*60,0,W/2,H/2,160);glow.addColorStop(0,'rgba(109,74,252,0.35)');glow.addColorStop(1,'rgba(109,74,252,0)');ctx.fillStyle=glow;ctx.fillRect(0,0,W,H);}
+        if(loadedImgs.length>1){const frameInSlide=frame%perImg;const flashDur=Math.min(8,perImg*0.15);if(frameInSlide<flashDur){const alpha=1-(frameInSlide/flashDur);ctx.fillStyle='rgba(255,255,255,'+alpha*0.7+')';ctx.fillRect(0,0,W,H);}}
+      }
+
+      if(titleText||priceText||subText){const barGrad=ctx.createLinearGradient(0,H-160,0,H);barGrad.addColorStop(0,'rgba(0,0,0,0)');barGrad.addColorStop(1,'rgba(0,0,0,0.82)');ctx.fillStyle=barGrad;ctx.fillRect(0,H-160,W,160);let y=H-110;ctx.textAlign='center';ctx.shadowColor='rgba(0,0,0,0.8)';ctx.shadowBlur=8;if(titleText){ctx.fillStyle=isCustom?'#fff':textColor;ctx.font='bold '+(fontSize+2)+'px "Segoe UI",sans-serif';ctx.fillText(titleText,W/2,y);y+=fontSize+10;}if(priceText){ctx.fillStyle=isCustom?ct.accent:'#fcd34d';ctx.font='bold '+Math.round(fontSize*0.9)+'px "Segoe UI",sans-serif';ctx.fillText(priceText,W/2,y);y+=fontSize;}if(subText){ctx.fillStyle='rgba(255,255,255,0.75)';ctx.font=Math.round(fontSize*0.7)+'px "Segoe UI",sans-serif';ctx.fillText(subText,W/2,y);}ctx.shadowBlur=0;}
+      if(isCustom&&ct.brand){ctx.save();ctx.textAlign='right';ctx.font='11px "Segoe UI",sans-serif';ctx.fillStyle='rgba(255,255,255,0.45)';ctx.fillText(ct.brand,W-10,H-10);ctx.restore();}
       ctx.save();ctx.textAlign='right';ctx.font='bold 13px "Segoe UI",sans-serif';ctx.shadowColor='rgba(0,0,0,0.6)';ctx.shadowBlur=4;ctx.fillStyle='rgba(255,255,255,0.72)';ctx.fillText('© Caryanams',W-10,H-10);ctx.restore();
       frame++; setTimeout(drawNextFrame,1000/fps);
     }
@@ -1485,17 +1886,17 @@ async function buildFallbackMP4() {
 
 async function doDownload() {
   const chosenFmt=(state.format||'mp4').toLowerCase(); const ext=chosenFmt==='webm'?'.webm':'.mp4';
-  if(state.exportBlob){triggerDownload(state.exportBlob,'caryanams_reel'+ext);showToast('✅','Video re-download ho raha hai!');return;}
-  showToast('🎬','Video bana raha hai...');
+  if(state.exportBlob){triggerDownload(state.exportBlob,'caryanams_reel'+ext);showToast('✅','Re-downloading video...');return;}
+  showToast('🎬','Building video...');
   const blob=await buildFallbackMP4(); state.exportBlob=blob; state._exportIsVideo=true;
-  triggerDownload(blob,'caryanams_reel'+ext); showToast('✅','Video download ho raha hai!');
+  triggerDownload(blob,'caryanams_reel'+ext); showToast('✅','Video download started!');
 }
 
 async function shareToAppNew(platform) {
   const platformConfig={whatsapp:'https://web.whatsapp.com/',instagram:'https://www.instagram.com/',youtube:'https://studio.youtube.com/channel/upload',facebook:'https://www.facebook.com/',twitter:'https://twitter.com/compose/tweet',tiktok:'https://www.tiktok.com/upload',email:'mailto:?subject=My%20Reel&body=Check%20out%20my%20reel!',other:null};
   const url=platformConfig[platform];
-  if(url){if(platform==='email'){window.location.href=url;}else{window.open(url,'_blank');}showToast('📤','App khul rahi hai — downloaded file upload karo!');}
-  else{if(navigator.share&&state.exportBlob){try{const file=new File([state.exportBlob],'reel.mp4',{type:'video/mp4'});await navigator.share({files:[file],title:'My Reel'});}catch(e){showToast('✅','File downloaded — share karo manually!');}}else{showToast('✅','File downloaded — share karo manually!');}}
+  if(url){if(platform==='email'){window.location.href=url;}else{window.open(url,'_blank');}showToast('📤','App opened — upload your downloaded file!');}
+  else{if(navigator.share&&state.exportBlob){try{const file=new File([state.exportBlob],'reel.mp4',{type:'video/mp4'});await navigator.share({files:[file],title:'My Reel'});}catch(e){showToast('✅','File downloaded — share it manually!');}}else{showToast('✅','File downloaded — share it manually!');}}
 }
 
 function triggerDownload(blob, filename) {
@@ -1503,21 +1904,24 @@ function triggerDownload(blob, filename) {
   document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(()=>URL.revokeObjectURL(url),1000);
 }
 
-/* UTILS */
+/* ══════════════════════════════════════════════════
+   UTILS
+══════════════════════════════════════════════════ */
 function updateSummary() {
   const sv=document.getElementById('sum-voice'); if(sv) sv.textContent=state.voice?langLabel(state.voice.lang):'None';
   const sm=document.getElementById('sum-music'); if(sm) sm.textContent=state.music?.name||'None';
   const st=document.getElementById('sum-template'); if(st) st.textContent=state.selectedTemplate?.name||'None';
   const si=document.getElementById('sum-images'); if(si) si.textContent=state.images.length;
 }
-function reloadPreview() { const iframe=document.getElementById('reelIframe'); if(iframe.src) iframe.src=iframe.src; }
 function showToast(icon, text) {
   const t=document.getElementById('toast'); document.getElementById('toastIcon').textContent=icon; document.getElementById('toastText').textContent=text;
   t.classList.add('show'); setTimeout(()=>t.classList.remove('show'),3000);
 }
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
-/* VOICE MODULE (TTS) */
+/* ══════════════════════════════════════════════════
+   VOICE MODULE (TTS)
+══════════════════════════════════════════════════ */
 function buildWaveform() {
   const wf=document.getElementById('voiceWaveform'); if(!wf)return; wf.innerHTML='';
   for(let i=0;i<28;i++){const bar=document.createElement('div');bar.className='wv-bar';bar.id='wvbar_'+i;const h=8+Math.abs(Math.sin(i*0.7+1)*20)+Math.random()*8;bar.style.cssText='width:5px;height:'+h+'px;border-radius:3px;background:linear-gradient(180deg,#a855f7,#ec4899);transform-origin:center;transform:scaleY(0.25);opacity:0.35;transition:transform .1s,opacity .1s;flex-shrink:0;';wf.appendChild(bar);}
@@ -1527,13 +1931,13 @@ function startWaveAnim(){_voiceIsPlaying=true;const bars=document.querySelectorA
 function stopWaveAnim(){_voiceIsPlaying=false;cancelAnimationFrame(_voiceAnimFrame);document.getElementById('voicePulseRing').style.display='none';document.querySelectorAll('.wv-bar').forEach(b=>{b.style.transform='scaleY(0.25)';b.style.opacity='0.35';});}
 function fmtVoiceTime(sec){if(!sec||sec<0)return'0:00';const m=Math.floor(sec/60),s=Math.floor(sec%60);return m+':'+String(s).padStart(2,'0');}
 function selectVoiceType(type,btn){state.voiceType=type;document.querySelectorAll('#voiceTypeGrid .format-btn').forEach(b=>b.classList.remove('active'));btn.classList.add('active');}
-function fillVoiceFromText(){const title=document.getElementById('textTitle').value;const price=document.getElementById('textPrice').value;const sub=document.getElementById('textSub').value;const desc=document.getElementById('textDesc').value;const parts=[title,price,sub,desc].filter(Boolean);if(parts.length){document.getElementById('ttsText').value=parts.join('. ');showToast('✍️','Text filled from overlay!');}else{showToast('⚠️','Add some text in Step 3 first!');}}
+function fillVoiceFromText(){const title=document.getElementById('textTitle').value;const price=document.getElementById('textPrice').value;const sub=document.getElementById('textSub').value;const desc=document.getElementById('textDesc').value;const parts=[title,price,sub,desc].filter(Boolean);if(parts.length){document.getElementById('ttsText').value=parts.join('. ');showToast('✍️','Script filled from overlay text!');}else{showToast('⚠️','Add some text in Step 3 first!');}}
 function langLabel(code){const map={'hi-IN':'Hindi','en-IN':'English (Indian)','gu-IN':'Gujarati','mr-IN':'Marathi','ml-IN':'Malayalam','or-IN':'Odia','ur-IN':'Urdu','ne-IN':'Nepali','pa-IN':'Punjabi','ta-IN':'Tamil','te-IN':'Telugu','kn-IN':'Kannada','bn-IN':'Bengali','en-US':'English (US)','en-GB':'English (UK)','fr-FR':'French','de-DE':'German','es-ES':'Spanish','ar-SA':'Arabic','ja-JP':'Japanese','zh-CN':'Chinese'};return map[code]||code;}
 function estimateDuration(text,rate){return Math.max(2,text.length/(14*(rate||1)));}
 let _voiceRecordedBlob=null,_voiceAudioEl=null;
 async function recordTTSToBlob(text,langCode,speed,pitch,voiceName){
-  try{const chunks=splitTextChunks(text,180);const audioBuffers=[];for(const chunk of chunks){const langShort=langCode.split('-')[0];const url='https://translate.googleapis.com/translate_tts?ie=UTF-8&q='+encodeURIComponent(chunk)+'&tl='+encodeURIComponent(langShort)+'&total=1&idx=0&textlen='+chunk.length+'&client=gtx&prev=input';const resp=await fetch(url);if(!resp.ok)throw new Error('GT TTS failed');const buf=await resp.arrayBuffer();if(buf.byteLength>500)audioBuffers.push(buf);}if(audioBuffers.length>0){const merged=mergeArrayBuffers(audioBuffers);return new Blob([merged],{type:'audio/mpeg'});}}catch(e){console.warn('[TTS] METHOD 1 failed:',e.message);}
-  try{const micStream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});const recCtx=new(window.AudioContext||window.webkitAudioContext)();const recDest=recCtx.createMediaStreamDestination();const micSource=recCtx.createMediaStreamSource(micStream);const micGain=recCtx.createGain();micGain.gain.value=1.0;micSource.connect(micGain);micGain.connect(recDest);const mimeType=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm';const recorder=new MediaRecorder(recDest.stream,{mimeType});const chunkArr=[];recorder.ondataavailable=e=>{if(e.data.size>0)chunkArr.push(e.data);};const voices=window.speechSynthesis.getVoices();const utt=new SpeechSynthesisUtterance(text);utt.lang=langCode;utt.rate=speed;utt.pitch=pitch;if(voiceName){const v=voices.find(vx=>vx.name===voiceName);if(v)utt.voice=v;}return await new Promise(resolve=>{recorder.start(80);utt.onend=()=>{setTimeout(()=>{try{recorder.stop();}catch(e){}setTimeout(()=>{micStream.getTracks().forEach(t=>t.stop());recCtx.close();const blob=new Blob(chunkArr,{type:mimeType});resolve(blob.size>8000?blob:null);},300);},500);};utt.onerror=()=>{try{recorder.stop();}catch(e){}micStream.getTracks().forEach(t=>t.stop());recCtx.close();resolve(null);};window.speechSynthesis.cancel();window.speechSynthesis.speak(utt);const safetyMs=Math.max(25000,text.length*200);setTimeout(()=>{if(recorder.state!=='inactive'){try{recorder.stop();}catch(e){}setTimeout(()=>{micStream.getTracks().forEach(t=>t.stop());recCtx.close();const blob=new Blob(chunkArr,{type:mimeType});resolve(blob.size>8000?blob:null);},300);}},safetyMs);});}catch(micErr){console.warn('[TTS] METHOD 2 failed:',micErr.message);}
+  try{const chunks=splitTextChunks(text,180);const audioBuffers=[];for(const chunk of chunks){const langShort=langCode.split('-')[0];const url='https://translate.googleapis.com/translate_tts?ie=UTF-8&q='+encodeURIComponent(chunk)+'&tl='+encodeURIComponent(langShort)+'&total=1&idx=0&textlen='+chunk.length+'&client=gtx&prev=input';const resp=await fetch(url);if(!resp.ok)throw new Error('TTS request failed');const buf=await resp.arrayBuffer();if(buf.byteLength>500)audioBuffers.push(buf);}if(audioBuffers.length>0){const merged=mergeArrayBuffers(audioBuffers);return new Blob([merged],{type:'audio/mpeg'});}}catch(e){console.warn('[TTS] Method 1 failed:',e.message);}
+  try{const micStream=await navigator.mediaDevices.getUserMedia({audio:true,video:false});const recCtx=new(window.AudioContext||window.webkitAudioContext)();const recDest=recCtx.createMediaStreamDestination();const micSource=recCtx.createMediaStreamSource(micStream);const micGain=recCtx.createGain();micGain.gain.value=1.0;micSource.connect(micGain);micGain.connect(recDest);const mimeType=MediaRecorder.isTypeSupported('audio/webm;codecs=opus')?'audio/webm;codecs=opus':'audio/webm';const recorder=new MediaRecorder(recDest.stream,{mimeType});const chunkArr=[];recorder.ondataavailable=e=>{if(e.data.size>0)chunkArr.push(e.data);};const voices=window.speechSynthesis.getVoices();const utt=new SpeechSynthesisUtterance(text);utt.lang=langCode;utt.rate=speed;utt.pitch=pitch;if(voiceName){const v=voices.find(vx=>vx.name===voiceName);if(v)utt.voice=v;}return await new Promise(resolve=>{recorder.start(80);utt.onend=()=>{setTimeout(()=>{try{recorder.stop();}catch(e){}setTimeout(()=>{micStream.getTracks().forEach(t=>t.stop());recCtx.close();const blob=new Blob(chunkArr,{type:mimeType});resolve(blob.size>8000?blob:null);},300);},500);};utt.onerror=()=>{try{recorder.stop();}catch(e){}micStream.getTracks().forEach(t=>t.stop());recCtx.close();resolve(null);};window.speechSynthesis.cancel();window.speechSynthesis.speak(utt);const safetyMs=Math.max(25000,text.length*200);setTimeout(()=>{if(recorder.state!=='inactive'){try{recorder.stop();}catch(e){}setTimeout(()=>{micStream.getTracks().forEach(t=>t.stop());recCtx.close();const blob=new Blob(chunkArr,{type:mimeType});resolve(blob.size>8000?blob:null);},300);}},safetyMs);});}catch(micErr){console.warn('[TTS] Method 2 failed:',micErr.message);}
   return null;
 }
 function splitTextChunks(text,maxLen){if(text.length<=maxLen)return[text];const chunks=[];const sentences=text.split(/(?<=[।|.!?])\s+/);let cur='';for(const s of sentences){if((cur+' '+s).trim().length>maxLen){if(cur)chunks.push(cur.trim());cur=s;}else{cur=(cur+' '+s).trim();}}if(cur)chunks.push(cur.trim());return chunks.length?chunks:[text.substring(0,maxLen)];}
@@ -1543,14 +1947,14 @@ async function generateVoice(){
   const text=document.getElementById('ttsText').value.trim();if(!text){showToast('⚠️','Please type some script text first!');return;}
   const langCode=document.getElementById('voiceLang').value;const speed=parseFloat(document.getElementById('voiceSpeed').value);const slow=speed<0.85;
   const statusEl=document.getElementById('voiceStatus');const btn=document.getElementById('generateVoiceBtn');
-  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating...';statusEl.textContent='⏳ Voice generate ho raha hai...';
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Generating...';statusEl.textContent='⏳ Generating voice...';
   document.getElementById('translatedTextBox').style.display='none';
   try{
     const resp=await fetch('/api/tts',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({text,lang:langCode,slow})});
     if(!resp.ok){const err=await resp.json().catch(()=>({error:resp.statusText}));throw new Error(err.error||'Server error '+resp.status);}
     const translated=resp.headers.get('X-Translated-Text');
     if(translated&&translated!==text){try{document.getElementById('translatedTextContent').textContent=decodeURIComponent(escape(translated));}catch(_){document.getElementById('translatedTextContent').textContent=translated;}document.getElementById('translatedTextBox').style.display='block';}
-    const mp3Blob=await resp.blob();if(mp3Blob.size<500)throw new Error('Server ne empty audio diya');
+    const mp3Blob=await resp.blob();if(mp3Blob.size<500)throw new Error('Server returned empty audio');
     _voiceRecordedBlob=mp3Blob;
     if(!_voiceAudioEl){_voiceAudioEl=document.getElementById('voiceAudio')||document.createElement('audio');_voiceAudioEl.style.display='none';if(!document.getElementById('voiceAudio'))document.body.appendChild(_voiceAudioEl);}
     const blobUrl=URL.createObjectURL(mp3Blob);_voiceAudioEl.src=blobUrl;_voiceAudioEl.load();
@@ -1558,9 +1962,9 @@ async function generateVoice(){
     _voiceDuration=_voiceAudioEl.duration||estimateDuration(text,speed);
     state.voice={text,lang:langCode,speed,slow,label:langLabel(langCode)};
     _voiceSpeedIdx=0;document.getElementById('voiceSpeedToggle').textContent='1×';document.getElementById('voiceTotalTime').textContent=fmtVoiceTime(_voiceDuration);
-    showVoicePlayer(langCode);statusEl.textContent='✅ Voice ready! Play button dabao sunne ke liye.';showToast('🎙️','Voice ready! Ab "Add Voice to Video" dabao.');
+    showVoicePlayer(langCode);statusEl.textContent='✅ Voice ready! Press play to listen.';showToast('🎙️','Voice ready! Click "Add Voice to Video" to include it.');
     try{_voiceAudioEl.currentTime=0;await _voiceAudioEl.play();document.getElementById('voicePlayIcon').className='fas fa-pause';document.getElementById('voicePulseRing').style.display='block';startWaveAnim();_voiceAudioEl.onended=()=>{document.getElementById('voicePlayIcon').className='fas fa-play';document.getElementById('voicePulseRing').style.display='none';stopWaveAnim();};}catch(e){}
-  }catch(e){statusEl.textContent='❌ Error: '+e.message;showToast('❌','Voice generate nahi hui: '+e.message);}
+  }catch(e){statusEl.textContent='❌ Error: '+e.message;showToast('❌','Voice generation failed: '+e.message);}
   btn.disabled=false;btn.innerHTML='<i class="fas fa-redo"></i> Regenerate';
 }
 function showVoicePlayer(langCode){const player=document.getElementById('voicePlayer');player.style.display='block';const lc=langCode||document.getElementById('voiceLang').value;document.getElementById('voiceTrackName').textContent='🗣️ Voice — '+langLabel(lc);document.getElementById('voiceLangBadge').textContent=lc+' · '+state.voiceType;document.getElementById('voiceSeekFill').style.width='0%';document.getElementById('voiceCurrentTime').textContent='0:00';buildWaveform();updateSummary();}
@@ -1571,17 +1975,17 @@ function seekVoice(e){if(!_voiceAudioEl||!_voiceAudioEl.src)return;const bar=doc
 function removeVoice(){stopWaveAnim();state.voice=null;state._lastUtterance=null;_voiceRecordedBlob=null;if(_voiceAudioEl){_voiceAudioEl.pause();_voiceAudioEl.src='';_voiceAudioEl=null;}document.getElementById('voicePlayer').style.display='none';document.getElementById('voiceStatus').textContent='';document.getElementById('generateVoiceBtn').innerHTML='<i class="fas fa-microphone"></i> Generate Voice';document.getElementById('generateVoiceBtn').disabled=false;updateSummary();}
 function updateVoicePreview(){if(state.voice)removeVoice();}
 async function addVoiceToVideo(){
-  const statusEl=document.getElementById('voiceDlStatus');const btn=document.getElementById('btnAddVoiceToVideo');const hasVoice=state.voice;if(!hasVoice){showToast('⚠️','Pehle voice generate karo!');return;}
-  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Preparing...';statusEl.textContent='⏳ Voice capture ho rahi hai...';
+  const statusEl=document.getElementById('voiceDlStatus');const btn=document.getElementById('btnAddVoiceToVideo');const hasVoice=state.voice;if(!hasVoice){showToast('⚠️','Please generate a voice first!');return;}
+  btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i> Preparing...';statusEl.textContent='⏳ Capturing voice...';
   try{
     let blob=_voiceRecordedBlob;
     if(!blob||blob.size<500){const v=state._lastUtterance||state.voice;blob=await recordTTSToBlob(v.text||state.voice.text,v.lang||state.voice.lang,v.rate||state.voice.speed,v.pitch||state.voice.pitch,v.voiceName||state.voice.voiceName||'');}
     if(blob&&blob.size>500){_voiceRecordedBlob=blob;const cb=document.getElementById('voiceInReel');if(cb)cb.checked=true;if(!_voiceAudioEl){_voiceAudioEl=document.getElementById('voiceAudio')||document.createElement('audio');_voiceAudioEl.style.display='none';if(!document.getElementById('voiceAudio'))document.body.appendChild(_voiceAudioEl);}
     _voiceAudioEl.src=URL.createObjectURL(blob);_voiceAudioEl.load();
     const isRealAudio=blob.type.includes('mpeg')||blob.size>5000;
-    if(isRealAudio){statusEl.textContent='✅ Voice video mein add ho gayi! Ab Export karo.';showToast('🎙️','Voice ready! Ab Export Reel karo.');}
-    else{statusEl.textContent='⚠️ Google TTS reach nahi hua. Internet check karo.';showToast('⚠️','Voice blob weak — internet check karo!');}}
-    else{statusEl.textContent='❌ Voice capture fail. Mic permission do ya internet check karo.';showToast('❌','Mic permission do ya internet check karo!');}
+    if(isRealAudio){statusEl.textContent='✅ Voice added to video! Now click Export.';showToast('🎙️','Voice added! Now click Export Reel.');}
+    else{statusEl.textContent='⚠️ Could not reach Google TTS. Check your internet connection.';showToast('⚠️','Voice capture weak — check your connection!');}}
+    else{statusEl.textContent='❌ Voice capture failed. Please allow mic access or check your connection.';showToast('❌','Allow mic access or check your connection!');}
   }catch(e){statusEl.textContent='❌ Error: '+e.message;}
   btn.disabled=false;btn.innerHTML='<i class="fas fa-film"></i> Add Voice to Video';
 }
@@ -1589,7 +1993,9 @@ async function addVoiceToVideo(){
 /* VOICE TAB */
 function switchVoiceTab(tab){const isTTS=tab==='tts';document.getElementById('vpanel-tts').style.display=isTTS?'':'none';document.getElementById('vpanel-rec').style.display=isTTS?'none':'';const tBtn=document.getElementById('vtab-tts');const rBtn=document.getElementById('vtab-rec');if(tBtn&&rBtn){tBtn.style.background=isTTS?'var(--accent)':'transparent';tBtn.style.color=isTTS?'#fff':'var(--muted)';rBtn.style.background=isTTS?'transparent':'var(--accent)';rBtn.style.color=isTTS?'var(--muted)':'#fff';}}
 
-/* RECORDING MODULE */
+/* ══════════════════════════════════════════════════
+   RECORDING MODULE
+══════════════════════════════════════════════════ */
 let _recMediaRecorder=null,_recChunks=[],_recStream=null,_recTimerInterval=null,_recSeconds=0,_recClips=[],_recSelectedClip=null,_recAnalyser=null,_recVisuFrame=null,_recAudioCtx=null;
 function buildRecBars(){const wrap=document.getElementById('recVisualizer');if(!wrap)return;wrap.innerHTML='';for(let i=0;i<32;i++){const b=document.createElement('div');b.style.cssText='width:5px;border-radius:3px;background:var(--accent3);opacity:0.5;height:4px;transition:height .05s';b.id='recbar_'+i;wrap.appendChild(b);}}
 function startRecVisual(){if(!_recAnalyser)return;const data=new Uint8Array(_recAnalyser.frequencyBinCount);function draw(){_recVisuFrame=requestAnimationFrame(draw);_recAnalyser.getByteFrequencyData(data);for(let i=0;i<32;i++){const b=document.getElementById('recbar_'+i);if(!b)continue;const val=data[Math.floor(i*data.length/32)];b.style.height=Math.max(4,(val/255)*40)+'px';b.style.opacity=val>10?'1':'0.3';}}draw();}
@@ -1598,12 +2004,12 @@ function startRecTimer(){_recSeconds=0;const el=document.getElementById('recTime
 function stopRecTimer(){clearInterval(_recTimerInterval);document.getElementById('recTimer').style.display='none';}
 async function toggleRecording(){
   if(_recMediaRecorder&&_recMediaRecorder.state==='recording'){_recMediaRecorder.stop();}
-  else{try{_recStream=await navigator.mediaDevices.getUserMedia({audio:true});}catch(e){document.getElementById('recStatus').textContent='❌ Mic permission denied.';return;}
+  else{try{_recStream=await navigator.mediaDevices.getUserMedia({audio:true});}catch(e){document.getElementById('recStatus').textContent='❌ Microphone permission denied.';return;}
   _recAudioCtx=new(window.AudioContext||window.webkitAudioContext)();const src=_recAudioCtx.createMediaStreamSource(_recStream);_recAnalyser=_recAudioCtx.createAnalyser();_recAnalyser.fftSize=128;src.connect(_recAnalyser);buildRecBars();startRecVisual();
   _recChunks=[];_recMediaRecorder=new MediaRecorder(_recStream);_recMediaRecorder.ondataavailable=e=>{if(e.data.size>0)_recChunks.push(e.data);};_recMediaRecorder.onstop=onRecStop;_recMediaRecorder.start();
   const btn=document.getElementById('recBtn');btn.style.background='rgba(239,68,68,.85)';btn.style.borderColor='#ef4444';btn.style.color='#fff';document.getElementById('recBtnIcon').className='fas fa-stop';document.getElementById('recStatus').textContent='🔴 Recording…';startRecTimer();}
 }
-function onRecStop(){if(_recStream){_recStream.getTracks().forEach(t=>t.stop());_recStream=null;}stopRecVisual();stopRecTimer();if(_recAudioCtx){_recAudioCtx.close();_recAudioCtx=null;_recAnalyser=null;}const btn=document.getElementById('recBtn');btn.style.background='rgba(239,68,68,.12)';btn.style.borderColor='#ef4444';btn.style.color='#ef4444';document.getElementById('recBtnIcon').className='fas fa-microphone';document.getElementById('recStatus').textContent='✅ Recording done!';const blob=new Blob(_recChunks,{type:'audio/webm'});const url=URL.createObjectURL(blob);const id='rec_'+Date.now();const name='Recording '+(_recClips.length+1);const clip={id,blob,url,name,duration:_recSeconds};_recClips.push(clip);renderRecClips();openRecTrim(clip);}
+function onRecStop(){if(_recStream){_recStream.getTracks().forEach(t=>t.stop());_recStream=null;}stopRecVisual();stopRecTimer();if(_recAudioCtx){_recAudioCtx.close();_recAudioCtx=null;_recAnalyser=null;}const btn=document.getElementById('recBtn');btn.style.background='rgba(239,68,68,.12)';btn.style.borderColor='#ef4444';btn.style.color='#ef4444';document.getElementById('recBtnIcon').className='fas fa-microphone';document.getElementById('recStatus').textContent='✅ Recording complete!';const blob=new Blob(_recChunks,{type:'audio/webm'});const url=URL.createObjectURL(blob);const id='rec_'+Date.now();const name='Recording '+(_recClips.length+1);const clip={id,blob,url,name,duration:_recSeconds};_recClips.push(clip);renderRecClips();openRecTrim(clip);}
 function renderRecClips(){const list=document.getElementById('recClipList');if(!_recClips.length){list.innerHTML='';return;}list.innerHTML=_recClips.map(c=>'<div id="clip_'+c.id+'" style="background:var(--surface2);border-radius:10px;padding:10px 12px;display:flex;align-items:center;gap:10px;border:2px solid '+(_recSelectedClip&&_recSelectedClip.id===c.id?'var(--accent3)':'transparent')+';cursor:pointer" onclick="selectRecClip(\''+c.id+'\')"><div style="width:36px;height:36px;border-radius:8px;background:linear-gradient(135deg,#00c9a7,#00a8e8);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0">🎙️</div><div style="flex:1;min-width:0"><div style="font-size:13px;font-weight:600">'+c.name+'</div><div style="font-size:11px;color:var(--muted)">'+fmtSec(c.duration)+'</div></div><div style="display:flex;gap:6px"><button onclick="event.stopPropagation();openRecTrim(\''+c.id+'\')" style="width:28px;height:28px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted);font-size:11px;cursor:pointer"><i class="fas fa-cut"></i></button><button onclick="event.stopPropagation();deleteRecClip(\''+c.id+'\')" style="width:28px;height:28px;border-radius:6px;border:none;background:rgba(239,68,68,.12);color:#ef4444;font-size:11px;cursor:pointer"><i class="fas fa-trash"></i></button></div></div>').join('');}
 function fmtSec(s){if(!s)return'—';const m=Math.floor(s/60),sec=String(Math.floor(s%60)).padStart(2,'0');return m+':'+sec;}
 function deleteRecClip(id){_recClips=_recClips.filter(c=>c.id!==id);if(_recSelectedClip&&_recSelectedClip.id===id){_recSelectedClip=null;document.getElementById('recTrimUI').style.display='none';document.getElementById('recPlayer').style.display='none';}renderRecClips();}
@@ -1615,10 +2021,12 @@ function activateRecPlayer(clip){const player=document.getElementById('recPlayer
 function toggleRecPlay(){const audio=document.getElementById('recAudio');const icon=document.getElementById('recPlayIcon');if(!audio.src)return;if(audio.paused){const s=_recSelectedClip?(_recSelectedClip.trimStart||0):0;if(audio.currentTime<=s+0.1)audio.currentTime=s;audio.play();icon.className='fas fa-pause';}else{audio.pause();icon.className='fas fa-play';}}
 function restartRec(){const audio=document.getElementById('recAudio');const s=_recSelectedClip?(_recSelectedClip.trimStart||0):0;audio.currentTime=s;audio.play().catch(()=>{});document.getElementById('recPlayIcon').className='fas fa-pause';}
 function seekRec(e){const audio=document.getElementById('recAudio');if(!audio.src||!_recSelectedClip)return;const bar=document.getElementById('recSeekBar');const rect=bar.getBoundingClientRect();const pct=Math.max(0,Math.min(1,(e.clientX-rect.left)/rect.width));const s=_recSelectedClip.trimStart||0;const e2=_recSelectedClip.trimEnd||audio.duration;audio.currentTime=s+pct*(e2-s);}
-function addRecToVideo(){if(!_recSelectedClip){showToast('⚠️','Koi recording selected nahi!');return;}const cb=document.getElementById('recInReel');if(cb)cb.checked=true;showToast('🎙️','Recording video mein add ho gayi! Ab Export karo.');document.querySelectorAll('[onclick="exportReel()"]').forEach(b=>{b.style.boxShadow='0 0 20px rgba(0,201,167,0.8)';setTimeout(()=>{b.style.boxShadow='';},2000);});}
+function addRecToVideo(){if(!_recSelectedClip){showToast('⚠️','No recording selected!');return;}const cb=document.getElementById('recInReel');if(cb)cb.checked=true;showToast('🎙️','Recording added to video! Now click Export Reel.');document.querySelectorAll('[onclick="exportReel()"]').forEach(b=>{b.style.boxShadow='0 0 20px rgba(0,201,167,0.8)';setTimeout(()=>{b.style.boxShadow='';},2000);});}
 function removeRecording(){const audio=document.getElementById('recAudio');audio.pause();audio.src='';_recSelectedClip=null;document.getElementById('recPlayer').style.display='none';document.getElementById('recTrimUI').style.display='none';renderRecClips();}
 
-/* MOBILE CONTROLLER — Bottom Nav REMOVED, Back button retained */
+/* ══════════════════════════════════════════════════
+   MOBILE CONTROLLER
+══════════════════════════════════════════════════ */
 (function(){
   const IS_MOBILE=()=>window.innerWidth<=768;
   const TOOL_STEP_MAP={templates:1,media:2,text:3,music:4,voice:5};
@@ -1627,34 +2035,17 @@ function removeRecording(){const audio=document.getElementById('recAudio');audio
   function initMobile(){
     if(!IS_MOBILE()||mobileInitialized)return;
     mobileInitialized=true;
-
-    /* Show mobile-only elements — NO bottom nav */
     document.getElementById('inshot-tools-bar').style.display='flex';
     document.getElementById('mobileBackBtn').style.display='';
-
     document.body.style.overflowY='hidden';
     document.body.style.height='100%';
-
     const mainLayout=document.getElementById('mainLayout');
     mainLayout.style.flexDirection='column';
     mainLayout.style.overflowY='hidden';
-
     const canvas=document.querySelector('.canvas-area');
-    if(canvas){
-      canvas.style.order='-1';
-      canvas.style.flexShrink='0';
-      canvas.style.height='48vw';
-      canvas.style.minHeight='200px';
-    }
-
+    if(canvas){canvas.style.order='-1';canvas.style.flexShrink='0';canvas.style.height='48vw';canvas.style.minHeight='200px';}
     const sidebar=document.getElementById('mainSidebar');
-    if(sidebar){
-      sidebar.style.flex='1';
-      sidebar.style.overflowY='auto';
-      sidebar.style.width='100%';
-      sidebar.style.borderRight='none';
-      sidebar.style.paddingBottom='0'; /* No bottom nav, so 0 */
-    }
+    if(sidebar){sidebar.style.flex='1';sidebar.style.overflowY='auto';sidebar.style.width='100%';sidebar.style.borderRight='none';sidebar.style.paddingBottom='0';}
   }
 
   window.mobileGoView=function(view,btn){
@@ -1662,7 +2053,6 @@ function removeRecording(){const audio=document.getElementById('recAudio');audio
     const canvas=document.querySelector('.canvas-area');
     const sidebar=document.getElementById('mainSidebar');
     const toolsBar=document.getElementById('inshot-tools-bar');
-
     if(view==='preview'){
       if(canvas){canvas.style.position='fixed';canvas.style.top='0';canvas.style.left='0';canvas.style.right='0';canvas.style.bottom='0';canvas.style.height='100vh';canvas.style.width='100vw';canvas.style.zIndex='998';}
       if(sidebar)sidebar.style.display='none';
