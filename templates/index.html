@@ -36,6 +36,15 @@ html,body { height:100%; overflow:hidden; }
   100% { transform: translateX(0); }
 }
 
+/* ── LOGO BOUNCE: goes up to half then comes down ── */
+@keyframes logoBounce {
+  0%   { transform: translateY(0); }
+  30%  { transform: translateY(-8px); }
+  50%  { transform: translateY(-4px); }
+  70%  { transform: translateY(-8px); }
+  100% { transform: translateY(0); }
+}
+
 body {
   background: var(--bg);
   color: var(--text);
@@ -59,6 +68,9 @@ body {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin-right: 8px;
+  /* Logo bounce animation */
+  display: inline-block;
+  animation: logoBounce 2.4s ease-in-out infinite;
 }
 .step-tabs {
   display: flex; gap: 4px;
@@ -166,7 +178,7 @@ body {
 .template-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .template-card.selected { border-color: var(--accent); box-shadow: var(--glow); }
 .template-preview {
-  width: 100%; aspect-ratio: 9/16; background: var(--surface3);
+  width: 100%; aspect-ratio: 9/16; background: #ffffff; /* ── WHITE background ── */
   display: flex; align-items: center; justify-content: center;
   font-size: 28px; position: relative; overflow: hidden;
 }
@@ -381,7 +393,8 @@ body {
 .tem-thumb {
   width: 100%; height: 100%; display: flex; align-items: center;
   justify-content: center; font-size: 30px;
-  background: linear-gradient(135deg, var(--surface3), var(--surface2));
+  /* White background for template thumbs */
+  background: #ffffff;
 }
 @keyframes voicePulse {
   0%   { opacity:.9; transform: scale(1); }
@@ -461,14 +474,6 @@ body {
 .cs-app:hover .cs-icon { transform:scale(1.08); }
 .cs-name { font-size:10px;color:#888;white-space:nowrap;font-weight:500; }
 
-/* Watermark notice badge */
-.wm-notice {
-  background: linear-gradient(135deg, rgba(109,74,252,.1), rgba(252,92,138,.1));
-  border: 1px solid rgba(109,74,252,.25);
-  border-radius: 8px; padding: 8px 12px; margin-bottom: 14px;
-  font-size: 11px; color: var(--accent); display: flex; align-items: center; gap: 8px;
-}
-
 /* Music remove active banner */
 .music-active-banner {
   background: rgba(109,74,252,.1); border: 1px solid rgba(109,74,252,.3);
@@ -487,7 +492,7 @@ body {
     <i class="fas fa-arrow-left"></i>
   </button>
   <span class="navbar-brand" style="display:flex;align-items:center;padding:0;background:transparent;">
-    <span style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#6d4afc,#fc5c8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Caryanams</span>
+    <span style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#6d4afc,#fc5c8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;animation:logoBounce 2.4s ease-in-out infinite;">Caryanams</span>
   </span>
   <div class="step-tabs">
     <button class="step-tab active" data-step="1" onclick="goStep(1)"><span class="step-num">1</span> Templates</button>
@@ -583,12 +588,6 @@ body {
                 </div>
               </div>
               <div class="custom-builder-panel" id="customBuilderPanel" onclick="event.stopPropagation()">
-
-                <!-- Watermark notice -->
-                <div class="wm-notice">
-                  <i class="fas fa-shield-alt"></i>
-                  <span><b>Caryanams</b> watermark auto-applied — top-left &amp; bottom-right corners (tamper-proof)</span>
-                </div>
 
                 <!-- Live Mini Preview -->
                 <div style="margin-bottom:14px;">
@@ -1405,7 +1404,6 @@ function _drawCustomBg(ctx, W, H, ct) {
   }
 }
 
-/* ══ WATERMARKS: TOP-LEFT corner + BOTTOM-RIGHT corner ══ */
 function _drawCustomOverlayFull(ctx, W, H, ct, isMini) {
   const isLight = ct.bgType === 'minimal';
   const textColor = isLight ? '#111' : '#fff';
@@ -1432,41 +1430,7 @@ function _drawCustomOverlayFull(ctx, W, H, ct, isMini) {
   if (sub) { ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = (baseFontSize - 4) + 'px ' + fontFam; ctx.fillText(sub, W / 2, ty + (price ? (baseFontSize + 4) * 2 : baseFontSize + 4)); }
   ctx.shadowBlur = 0;
 
-  _drawWatermarks(ctx, W, H, isMini);
-}
-
-function _drawWatermarks(ctx, W, H, isMini) {
-  const fs = isMini ? 8 : 12;
-  const pad = isMini ? 5 : 8;
-  ctx.save();
-
-  // ── TOP-LEFT CORNER watermark ──
-  const topText = '© ' + BRAND;
-  ctx.font = 'bold ' + fs + 'px "Segoe UI",sans-serif';
-  ctx.textAlign = 'left';
-  const topTxtW = ctx.measureText(topText).width + pad * 2;
-  const topTxtH = fs + pad * 1.5;
-  const topX = isMini ? 5 : 8;
-  const topY = isMini ? 5 : 8;
-  ctx.fillStyle = 'rgba(0,0,0,0.4)';
-  _roundRect(ctx, topX, topY, topTxtW, topTxtH, isMini ? 3 : 4); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.6)';
-  ctx.fillText(topText, topX + pad, topY + topTxtH - pad * 0.6);
-
-  // ── BOTTOM-RIGHT CORNER watermark ──
-  const botText = BRAND + '.com';
-  ctx.font = 'bold ' + (fs - 1) + 'px "Segoe UI",sans-serif';
-  ctx.textAlign = 'right';
-  const botTxtW = ctx.measureText(botText).width + pad * 2;
-  const botTxtH = (fs - 1) + pad * 1.5;
-  const botX = W - (isMini ? 5 : 8) - botTxtW;
-  const botY = H - (isMini ? 5 : 8) - botTxtH;
-  ctx.fillStyle = 'rgba(0,0,0,0.42)';
-  _roundRect(ctx, botX, botY, botTxtW, botTxtH, isMini ? 3 : 4); ctx.fill();
-  ctx.fillStyle = 'rgba(255,255,255,0.62)';
-  ctx.fillText(botText, W - (isMini ? 5 : 8) - pad, botY + botTxtH - pad * 0.6);
-
-  ctx.restore();
+  /* ── NO WATERMARKS ── removed as requested */
 }
 
 function _roundRect(ctx, x, y, w, h, r) {
@@ -1665,7 +1629,7 @@ function setTextColor(color, el) {
 }
 
 /* ══════════════════════════════════════════════════
-   MUSIC — with trim validation + remove-before-add
+   MUSIC
 ══════════════════════════════════════════════════ */
 function switchMusicTab(tab) {
   const isBuiltin = tab === 'builtin';
@@ -1693,7 +1657,6 @@ function musicCardHTML(t, icon) {
   return '<div class="music-item" id="mi_' + t.id + '" onclick="selectMusic(' + d + ',this)"><div class="music-icon">' + icon + '</div><div class="music-info" style="flex:1;min-width:0;overflow:hidden"><div class="music-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">' + t.name + '</div><div class="music-dur">' + trimLabel + '</div></div><button class="music-play" onclick="event.stopPropagation();selectMusic(' + d + ',document.getElementById(\'mi_' + t.id + '\'))"><i class="fas fa-play" id="picon_' + t.id + '"></i></button></div>';
 }
 
-/* ── Trim validation: end must be > start ── */
 function validateTrimTimes() {
   const startEl = document.getElementById('trimStart');
   const endEl = document.getElementById('trimEnd');
@@ -1703,7 +1666,6 @@ function validateTrimTimes() {
   const start = parseFloat(startEl.value) || 0;
   const end = parseFloat(endEl.value);
   const hasEnd = endEl.value !== '' && !isNaN(end);
-
   if (hasEnd && end <= start) {
     errEl.style.display = 'block';
     if (saveBtn) saveBtn.disabled = true;
@@ -1719,14 +1681,11 @@ function validateTrimTimes() {
 
 async function handleMusicUpload(event) {
   const file = event.target.files[0]; if (!file) return;
-
-  // If music already selected, ask user to remove first
   if (state.music) {
     const confirmed = confirm('🎵 "' + state.music.name + '" is already selected.\n\nRemove it and add new music?');
     if (!confirmed) { event.target.value = ''; return; }
     removeMusicSelection();
   }
-
   const url = URL.createObjectURL(file);
   const tid = Date.now().toString();
   const track = { id: tid, name: file.name, url, duration: '', start: 0, end: null };
@@ -1769,25 +1728,18 @@ function renderUserMusic() { document.getElementById('userMusicList').innerHTML 
 
 let activeTrackId = null;
 
-/* ── Select music: if another track already playing, confirm remove first ── */
 function selectMusic(track, el) {
   const audio = document.getElementById('audioPreview');
-
   if (activeTrackId && activeTrackId !== track.id) {
-    // Another track is already selected — show remove confirmation
     const confirmed = confirm('🎵 "' + state.music.name + '" is already selected.\n\nReplace it with "' + track.name + '"?');
     if (!confirmed) return;
-    // Remove old
     audio.pause();
     const pi = document.getElementById('picon_' + activeTrackId); if (pi) pi.className = 'fas fa-play';
     document.querySelectorAll('.music-item').forEach(i => i.classList.remove('selected'));
     activeTrackId = null; state.music = null;
-    updateActiveMusicBanner();
-    updateSummary();
+    updateActiveMusicBanner(); updateSummary();
   }
-
   if (activeTrackId === track.id) { toggleMusicPlay(); return; }
-
   audio.pause();
   activeTrackId = track.id; state.music = track;
   if (el) el.classList.add('selected');
@@ -1797,20 +1749,15 @@ function selectMusic(track, el) {
   audio.ontimeupdate = () => { if (e && audio.currentTime >= e) { audio.currentTime = s; } };
   audio.onplay = () => { const ic = document.getElementById('picon_' + track.id); if (ic) ic.className = 'fas fa-pause'; };
   audio.onpause = () => { const ic = document.getElementById('picon_' + track.id); if (ic) ic.className = 'fas fa-play'; };
-  updateActiveMusicBanner();
-  updateSummary();
+  updateActiveMusicBanner(); updateSummary();
   showToast('🎵', 'Playing: ' + track.name);
 }
 
 function updateActiveMusicBanner() {
   const banner = document.getElementById('activeMusicBanner');
   const nameEl = document.getElementById('activeMusicName');
-  if (state.music) {
-    banner.style.display = 'flex';
-    nameEl.textContent = '🎵 ' + state.music.name;
-  } else {
-    banner.style.display = 'none';
-  }
+  if (state.music) { banner.style.display = 'flex'; nameEl.textContent = '🎵 ' + state.music.name; }
+  else { banner.style.display = 'none'; }
 }
 
 function toggleMusicPlay() { const audio = document.getElementById('audioPreview'); if (!audio.src) return; audio.paused ? audio.play() : audio.pause(); }
@@ -1820,8 +1767,7 @@ function removeMusicSelection() {
   audio.pause(); audio.src = '';
   if (activeTrackId) { const pi = document.getElementById('picon_' + activeTrackId); if (pi) pi.className = 'fas fa-play'; const it = document.getElementById('mi_' + activeTrackId); if (it) it.classList.remove('selected'); }
   activeTrackId = null; state.music = null;
-  updateActiveMusicBanner();
-  updateSummary();
+  updateActiveMusicBanner(); updateSummary();
   showToast('🗑️', 'Music removed');
 }
 
@@ -2040,35 +1986,7 @@ async function buildFallbackMP4() {
         ctx.shadowBlur = 0;
       }
 
-      // ══ WATERMARKS IN EXPORTED VIDEO: TOP-LEFT + BOTTOM-RIGHT ══
-      const fs = 12;
-      const pad = 8;
-
-      // TOP-LEFT
-      ctx.save();
-      ctx.textAlign = 'left';
-      ctx.font = 'bold ' + fs + 'px "Segoe UI",sans-serif';
-      const topTxt = '© ' + BRAND;
-      const topTxtW = ctx.measureText(topTxt).width + pad * 2;
-      const topTxtH = fs + pad * 1.5;
-      ctx.fillStyle = 'rgba(0,0,0,0.42)';
-      _roundRect(ctx, 8, 8, topTxtW, topTxtH, 4); ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.6)';
-      ctx.fillText(topTxt, 8 + pad, 8 + topTxtH - pad * 0.6);
-      ctx.restore();
-
-      // BOTTOM-RIGHT
-      ctx.save();
-      ctx.textAlign = 'right';
-      ctx.font = 'bold ' + (fs - 1) + 'px "Segoe UI",sans-serif';
-      const botTxt = BRAND + '.com';
-      const botTxtW = ctx.measureText(botTxt).width + pad * 2;
-      const botTxtH = (fs - 1) + pad * 1.5;
-      ctx.fillStyle = 'rgba(0,0,0,0.44)';
-      _roundRect(ctx, W - 8 - botTxtW, H - 8 - botTxtH, botTxtW, botTxtH, 4); ctx.fill();
-      ctx.fillStyle = 'rgba(255,255,255,0.62)';
-      ctx.fillText(botTxt, W - 8 - pad, H - 8 - botTxtH + botTxtH - pad * 0.6);
-      ctx.restore();
+      /* ── NO WATERMARKS IN VIDEO ── removed as requested */
 
       frame++;
       setTimeout(drawNextFrame, 1000 / fps);
