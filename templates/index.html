@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Caryanams — Auto Video Reel Generator</title>
+  
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -36,7 +37,6 @@ html,body { height:100%; overflow:hidden; }
   100% { transform: translateX(0); }
 }
 
-/* ── LOGO BOUNCE: goes up to half then comes down ── */
 @keyframes logoBounce {
   0%   { transform: translateY(0); }
   30%  { transform: translateY(-8px); }
@@ -68,7 +68,6 @@ body {
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin-right: 8px;
-  /* Logo bounce animation */
   display: inline-block;
   animation: logoBounce 2.4s ease-in-out infinite;
 }
@@ -178,7 +177,7 @@ body {
 .template-card:hover { border-color: var(--accent); transform: translateY(-2px); }
 .template-card.selected { border-color: var(--accent); box-shadow: var(--glow); }
 .template-preview {
-  width: 100%; aspect-ratio: 9/16; background: #ffffff; /* ── WHITE background ── */
+  width: 100%; aspect-ratio: 9/16; background: #ffffff;
   display: flex; align-items: center; justify-content: center;
   font-size: 28px; position: relative; overflow: hidden;
 }
@@ -393,7 +392,6 @@ body {
 .tem-thumb {
   width: 100%; height: 100%; display: flex; align-items: center;
   justify-content: center; font-size: 30px;
-  /* White background for template thumbs */
   background: #ffffff;
 }
 @keyframes voicePulse {
@@ -491,9 +489,14 @@ body {
   <button class="btn btn-ghost" id="mobileBackBtn" onclick="mobileBack()" style="display:none;padding:6px 10px;border-radius:8px;">
     <i class="fas fa-arrow-left"></i>
   </button>
+
+  <!-- SIRF NAVBAR LOGO -->
   <span class="navbar-brand" style="display:flex;align-items:center;padding:0;background:transparent;">
-    <span style="font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(135deg,#6d4afc,#fc5c8a);-webkit-background-clip:text;-webkit-text-fill-color:transparent;display:inline-block;animation:logoBounce 2.4s ease-in-out infinite;">Caryanams</span>
+    <img src="{{ url_for('static', filename='logo.png') }}"
+         alt="Caryanams Logo"
+         style="height:45px;width:auto;animation:logoBounce 2.4s ease-in-out infinite;">
   </span>
+
   <div class="step-tabs">
     <button class="step-tab active" data-step="1" onclick="goStep(1)"><span class="step-num">1</span> Templates</button>
     <button class="step-tab" data-step="2" onclick="goStep(2)"><span class="step-num">2</span> Media</button>
@@ -788,7 +791,6 @@ body {
           <p>Add background music to your car reel</p>
         </div>
         <div class="sidebar-body">
-          <!-- Active music banner (shows when music is selected) -->
           <div id="activeMusicBanner" style="display:none;" class="music-active-banner">
             <div style="font-size:18px;">🎵</div>
             <div class="mab-name" id="activeMusicName">—</div>
@@ -812,7 +814,6 @@ body {
             </div>
             <input type="file" id="musicInput" accept="audio/*" style="display:none" onchange="handleMusicUpload(event)">
 
-            <!-- TRIM UI with validation -->
             <div id="trimUI" style="display:none;margin-top:12px;background:var(--surface2);border-radius:12px;padding:14px;border:1px solid var(--border)">
               <div style="font-size:12px;font-weight:600;color:var(--muted);margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px">✂️ Trim Music</div>
               <audio id="trimAudio" style="width:100%;height:32px;border-radius:6px;margin-bottom:10px"></audio>
@@ -826,7 +827,6 @@ body {
                   <input type="number" id="trimEnd" min="0" value="" placeholder="Full" style="width:100%;padding:7px 10px;border-radius:7px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:13px;outline:none" oninput="validateTrimTimes()">
                 </div>
               </div>
-              <!-- Trim validation error -->
               <div id="trimError" style="display:none;font-size:11px;color:#ef4444;font-weight:600;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);border-radius:6px;padding:6px 10px;margin-bottom:8px;">
                 ⚠️ End time must be greater than Start time
               </div>
@@ -838,7 +838,6 @@ body {
             <div class="music-list" id="userMusicList" style="margin-top:10px"></div>
           </div>
 
-          <!-- Music Player bar -->
           <div id="musicPlayer" style="display:none;margin-top:14px">
             <audio id="audioPreview" style="display:none"></audio>
             <div style="background:#1a1a2e;border-radius:16px;padding:12px 14px;display:flex;align-items:center;gap:12px;box-shadow:0 4px 20px rgba(0,0,0,0.3)">
@@ -1108,9 +1107,6 @@ body {
 </div>
 
 <script>
-/* ══════════════════════════════════════════════════
-   STATE
-══════════════════════════════════════════════════ */
 const BRAND = 'Caryanams';
 
 const state = {
@@ -1130,9 +1126,6 @@ let _ctSlideInterval = null;
 let _ctSlideIdx = 0;
 let _ctLoadedImgs = [];
 
-/* ══════════════════════════════════════════════════
-   INIT
-══════════════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', async () => {
   await loadTemplates();
   checkPendingTemplate();
@@ -1143,9 +1136,6 @@ window.addEventListener('DOMContentLoaded', async () => {
   startCustomSlideshow();
 });
 
-/* ══════════════════════════════════════════════════
-   STEP NAVIGATION
-══════════════════════════════════════════════════ */
 function updateStepDots(n) {
   for (let i = 1; i <= 5; i++) {
     const d = document.getElementById('sd' + i);
@@ -1221,9 +1211,6 @@ function flashStepError(stepNum) {
   showToast('🚫', total === 0 ? 'Upload ' + limit + ' car photos first!' : total > limit ? 'Remove extra photos!' : 'Add more car photos!');
 }
 
-/* ══════════════════════════════════════════════════
-   TEMPLATES
-══════════════════════════════════════════════════ */
 async function loadTemplates() {
   try {
     const res = await fetch('/api/templates');
@@ -1308,9 +1295,6 @@ function loadTemplatePreview(id) {
   iframe.onload = () => { if (state.images.length) injectImagesToTemplate(); };
 }
 
-/* ══════════════════════════════════════════════════
-   CUSTOM TEMPLATE BUILDER
-══════════════════════════════════════════════════ */
 let _customBuilderOpen = false;
 
 function toggleCustomBuilder() {
@@ -1429,8 +1413,6 @@ function _drawCustomOverlayFull(ctx, W, H, ct, isMini) {
   if (price) { ctx.fillStyle = ct.accent; ctx.font = 'bold ' + (baseFontSize - 2) + 'px ' + fontFam; ctx.fillText(price, W / 2, ty + baseFontSize + 4); }
   if (sub) { ctx.fillStyle = 'rgba(255,255,255,0.75)'; ctx.font = (baseFontSize - 4) + 'px ' + fontFam; ctx.fillText(sub, W / 2, ty + (price ? (baseFontSize + 4) * 2 : baseFontSize + 4)); }
   ctx.shadowBlur = 0;
-
-  /* ── NO WATERMARKS ── removed as requested */
 }
 
 function _roundRect(ctx, x, y, w, h, r) {
@@ -1521,9 +1503,6 @@ function applyCustomTemplate() {
   if (window.innerWidth <= 768) { const btn = document.getElementById('mobileFullscreenBtn'); if (btn) btn.style.display = 'block'; }
 }
 
-/* ══════════════════════════════════════════════════
-   IMAGES
-══════════════════════════════════════════════════ */
 function setupDragDrop() {
   const dz = document.getElementById('dropZone');
   ['dragenter','dragover'].forEach(e => dz.addEventListener(e, ev => { ev.preventDefault(); dz.classList.add('dragover'); }));
@@ -1596,9 +1575,6 @@ function injectImagesToTemplate() {
   } catch(e) {}
 }
 
-/* ══════════════════════════════════════════════════
-   TEXT OVERLAY
-══════════════════════════════════════════════════ */
 function updateOverlay() {
   const title = document.getElementById('textTitle').value;
   const price = document.getElementById('textPrice').value;
@@ -1628,9 +1604,6 @@ function setTextColor(color, el) {
   document.getElementById('ol-title').style.color = color;
 }
 
-/* ══════════════════════════════════════════════════
-   MUSIC
-══════════════════════════════════════════════════ */
 function switchMusicTab(tab) {
   const isBuiltin = tab === 'builtin';
   document.getElementById('mpanel-builtin').style.display = isBuiltin ? 'block' : 'none';
@@ -1773,9 +1746,6 @@ function removeMusicSelection() {
 
 function fmtTime(sec) { if (isNaN(sec) || sec < 0) return '0:00'; const m = Math.floor(sec / 60), s = Math.floor(sec % 60); return m + ':' + String(s).padStart(2,'0'); }
 
-/* ══════════════════════════════════════════════════
-   EXPORT
-══════════════════════════════════════════════════ */
 const esState = { res: '1080p', fps: '30fps', fmt: 'MP4' };
 function openExportSheet() { updateEsSize(); const sheet = document.getElementById('exportSheet'); sheet.style.display = 'flex'; requestAnimationFrame(() => { document.getElementById('exportSheetInner').style.transform = 'translateY(0)'; }); }
 function closeExportSheet() { document.getElementById('exportSheetInner').style.transform = 'translateY(100%)'; setTimeout(() => { document.getElementById('exportSheet').style.display = 'none'; }, 350); }
@@ -1986,8 +1956,6 @@ async function buildFallbackMP4() {
         ctx.shadowBlur = 0;
       }
 
-      /* ── NO WATERMARKS IN VIDEO ── removed as requested */
-
       frame++;
       setTimeout(drawNextFrame, 1000 / fps);
     }
@@ -2016,9 +1984,6 @@ function triggerDownload(blob, filename) {
   document.body.appendChild(a); a.click(); document.body.removeChild(a); setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
 
-/* ══════════════════════════════════════════════════
-   UTILS
-══════════════════════════════════════════════════ */
 function updateSummary() {
   const sm=document.getElementById('sum-music'); if(sm) sm.textContent=state.music?.name||'None';
   const st=document.getElementById('sum-template'); if(st) st.textContent=state.selectedTemplate?.name||'None';
@@ -2030,9 +1995,6 @@ function showToast(icon, text) {
 }
 function sleep(ms){return new Promise(r=>setTimeout(r,ms));}
 
-/* ══════════════════════════════════════════════════
-   VOICE MODULE (TTS)
-══════════════════════════════════════════════════ */
 function buildWaveform() {
   const wf=document.getElementById('voiceWaveform'); if(!wf)return; wf.innerHTML='';
   for(let i=0;i<28;i++){const bar=document.createElement('div');bar.className='wv-bar';bar.id='wvbar_'+i;const h=8+Math.abs(Math.sin(i*0.7+1)*20)+Math.random()*8;bar.style.cssText='width:5px;height:'+h+'px;border-radius:3px;background:linear-gradient(180deg,#a855f7,#ec4899);transform-origin:center;transform:scaleY(0.25);opacity:0.35;transition:transform .1s,opacity .1s;flex-shrink:0;';wf.appendChild(bar);}
@@ -2095,9 +2057,6 @@ async function addVoiceToVideo(){
 }
 function switchVoiceTab(tab){const isTTS=tab==='tts';document.getElementById('vpanel-tts').style.display=isTTS?'':'none';document.getElementById('vpanel-rec').style.display=isTTS?'none':'';const tBtn=document.getElementById('vtab-tts');const rBtn=document.getElementById('vtab-rec');if(tBtn&&rBtn){tBtn.style.background=isTTS?'var(--accent)':'transparent';tBtn.style.color=isTTS?'#fff':'var(--muted)';rBtn.style.background=isTTS?'transparent':'var(--accent)';rBtn.style.color=isTTS?'var(--muted)':'#fff';}}
 
-/* ══════════════════════════════════════════════════
-   RECORDING MODULE
-══════════════════════════════════════════════════ */
 let _recMediaRecorder=null,_recChunks=[],_recStream=null,_recTimerInterval=null,_recSeconds=0,_recClips=[],_recSelectedClip=null,_recAnalyser=null,_recVisuFrame=null,_recAudioCtx=null;
 function buildRecBars(){const wrap=document.getElementById('recVisualizer');if(!wrap)return;wrap.innerHTML='';for(let i=0;i<32;i++){const b=document.createElement('div');b.style.cssText='width:5px;border-radius:3px;background:var(--accent3);opacity:0.5;height:4px;transition:height .05s';b.id='recbar_'+i;wrap.appendChild(b);}}
 function startRecVisual(){if(!_recAnalyser)return;const data=new Uint8Array(_recAnalyser.frequencyBinCount);function draw(){_recVisuFrame=requestAnimationFrame(draw);_recAnalyser.getByteFrequencyData(data);for(let i=0;i<32;i++){const b=document.getElementById('recbar_'+i);if(!b)continue;const val=data[Math.floor(i*data.length/32)];b.style.height=Math.max(4,(val/255)*40)+'px';b.style.opacity=val>10?'1':'0.3';}}draw();}
@@ -2123,9 +2082,6 @@ function seekRec(e){const audio=document.getElementById('recAudio');if(!audio.sr
 function addRecToVideo(){if(!_recSelectedClip){showToast('⚠️','No recording selected!');return;}const cb=document.getElementById('recInReel');if(cb)cb.checked=true;showToast('🎙️','Recording added! Now click Export Reel.');}
 function removeRecording(){const audio=document.getElementById('recAudio');audio.pause();audio.src='';_recSelectedClip=null;document.getElementById('recPlayer').style.display='none';renderRecClips();}
 
-/* ══════════════════════════════════════════════════
-   MOBILE CONTROLLER
-══════════════════════════════════════════════════ */
 (function(){
   const IS_MOBILE=()=>window.innerWidth<=768;
   const TOOL_STEP_MAP={templates:1,media:2,text:3,music:4,voice:5};
