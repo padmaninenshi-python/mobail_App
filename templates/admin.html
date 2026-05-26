@@ -21,9 +21,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   padding:16px 30px; display:flex; align-items:center; gap:16px;
   position:sticky; top:0; z-index:100;
 }
-.brand { font-family:'Syne',sans-serif; font-size:20px; font-weight:800;
-  background:linear-gradient(135deg,var(--accent),var(--accent2));
-  -webkit-background-clip:text; -webkit-text-fill-color:transparent; } 
 .brand-badge {
   background:var(--accent); color:white; font-size:11px; font-weight:700;
   padding:3px 8px; border-radius:12px; -webkit-text-fill-color:white;
@@ -68,15 +65,12 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .section-title { font-family:'Syne',sans-serif; font-size:22px; font-weight:700; }
 .section-desc { font-size:13px; color:var(--muted); margin-top:4px; }
 
-/* STATS CARDS */
 .stats-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:28px; }
-.stat-card { background:var(--surface); border-radius:var(--radius); padding:20px;
-  border:1px solid var(--border); }
+.stat-card { background:var(--surface); border-radius:var(--radius); padding:20px; border:1px solid var(--border); }
 .stat-value { font-size:32px; font-weight:700; font-family:'Syne',sans-serif; }
 .stat-label { font-size:12px; color:var(--muted); margin-top:4px; }
 .stat-icon { font-size:24px; margin-bottom:8px; }
 
-/* TEMPLATE MANAGEMENT */
 .template-admin-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); gap:14px; }
 .t-admin-card {
   background:var(--surface); border-radius:var(--radius); overflow:hidden;
@@ -85,12 +79,11 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .t-admin-card:hover { border-color:var(--accent); }
 .t-admin-thumb {
   width:100%; aspect-ratio:9/16; background:var(--surface2);
-  display:flex; align-items:center; justify-content:center; font-size:40px;
-  position:relative;
+  position:relative; overflow:hidden;
 }
 .t-admin-overlay {
   position:absolute; inset:0; background:rgba(0,0,0,.7);
-  display:none; align-items:center; justify-content:center; gap:8px;
+  display:none; align-items:center; justify-content:center; gap:8px; z-index:10;
 }
 .t-admin-card:hover .t-admin-overlay { display:flex; }
 .t-admin-info { padding:10px 12px; display:flex; align-items:center; justify-content:space-between; }
@@ -104,7 +97,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .t-admin-toggle.on::after { left:19px; }
 .t-admin-toggle.off::after { left:3px; }
 
-/* MUSIC MANAGEMENT */
 .music-admin-list { display:flex; flex-direction:column; gap:10px; }
 .music-admin-item {
   background:var(--surface); border-radius:var(--radius); padding:16px;
@@ -118,7 +110,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .m-meta { font-size:12px; color:var(--muted); }
 .m-actions { display:flex; gap:8px; }
 
-/* UPLOAD ZONE */
 .upload-zone {
   border:2px dashed var(--border); border-radius:var(--radius);
   padding:40px; text-align:center; cursor:pointer; transition:all .2s;
@@ -128,7 +119,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 .uz-icon { font-size:40px; color:var(--accent); margin-bottom:12px; display:block; }
 .uz-text { font-size:14px; color:var(--muted); }
 
-/* FORM */
 .form-group { margin-bottom:16px; }
 .form-label { font-size:12px; font-weight:600; color:var(--muted); 
   text-transform:uppercase; letter-spacing:.5px; margin-bottom:6px; display:block; }
@@ -139,13 +129,11 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
   outline:none; transition:border-color .2s;
 }
 .form-input:focus, .form-select:focus { border-color:var(--accent); }
-
 .form-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
 
 .card { background:var(--surface); border-radius:var(--radius); border:1px solid var(--border); padding:20px; margin-bottom:16px; }
 .card-title { font-size:14px; font-weight:700; margin-bottom:12px; }
 
-/* TOAST */
 .toast {
   position:fixed; bottom:24px; right:24px; z-index:2000;
   background:var(--surface); border:1px solid var(--border); border-radius:12px;
@@ -154,7 +142,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 }
 .toast.show { transform:translateX(0); }
 
-/* TABLE */
 .admin-table { width:100%; border-collapse:collapse; }
 .admin-table th, .admin-table td { padding:12px 16px; text-align:left; border-bottom:1px solid var(--border); font-size:13px; }
 .admin-table th { color:var(--muted); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:1px; }
@@ -173,7 +160,7 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 <body>
 
 <header class="admin-header">
-  <span class="brand">Caryanams</span>
+  <img src="data:image/png;base64,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" alt="Caryanams" style="height:36px;width:auto;object-fit:contain;border-radius:4px">
   <span class="brand-badge">ADMIN</span>
   <div class="header-actions">
     <button class="btn btn-ghost" onclick="window.location='/'"><i class="fas fa-arrow-left"></i> Back to Editor</button>
@@ -298,8 +285,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
         <div class="section-desc">Manage built-in background tracks for users</div>
       </div>
 
-
-      <!-- Tab switcher: Upload vs Link -->
       <div style="display:flex;gap:0;background:var(--surface2);border-radius:10px;padding:4px;margin-bottom:14px">
         <button id="atab-upload" onclick="switchAddTab('upload')" style="flex:1;border:none;border-radius:8px;padding:8px;font-size:13px;font-weight:600;cursor:pointer;background:var(--accent);color:#fff;transition:all .2s">
           <i class="fas fa-cloud-upload-alt"></i> Upload File
@@ -309,17 +294,15 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
         </button>
       </div>
 
-      <!-- Upload panel -->
       <div id="apanel-upload">
         <div class="upload-zone" onclick="document.getElementById('adminMusicInput').click()">
           <span class="uz-icon"><i class="fas fa-cloud-upload-alt"></i></span>
           <div class="uz-text">Click to upload music track<br><span style="font-size:12px">MP3, WAV, OGG supported</span></div>
         </div>
         <input type="file" id="adminMusicInput" accept="audio/*" style="display:none" onchange="uploadAdminMusic(event)">
-        <button class="btn btn-ghost" style="margin-top:8px;font-size:12px" onclick="migrateOldMusic()" title="Fix old tracks that don\'t play"><i class="fas fa-sync"></i> Fix Old Tracks</button>
+        <button class="btn btn-ghost" style="margin-top:8px;font-size:12px" onclick="migrateOldMusic()" title="Fix old tracks that don't play"><i class="fas fa-sync"></i> Fix Old Tracks</button>
       </div>
 
-      <!-- Link panel -->
       <div id="apanel-link" style="display:none">
         <div style="background:var(--surface2);border-radius:12px;padding:16px;border:1px solid var(--border)">
           <div style="margin-bottom:12px">
@@ -346,7 +329,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
           Direct MP3/WAV/OGG/M4A URLs &bull; Google Drive direct download &bull; Dropbox (dl=1)
         </div>
       </div>
-
 
       <div style="margin-bottom:12px;display:flex;align-items:center;justify-content:space-between">
         <span style="font-size:13px;color:var(--muted)" id="musicCountLabel">0 tracks</span>
@@ -401,8 +383,6 @@ body { background:var(--bg); color:var(--text); font-family:'DM Sans',sans-serif
 </div>
 
 <script>
-const EMOJIS = {1:'🚗',2:'🎬',3:'✨',4:'⚡',5:'🖼️',6:'📊',7:'🌀',8:'➡️',9:'🔀',10:'🎭',11:'🪟',12:'📦',13:'🔄',14:'📑',15:'💎',16:'📸',17:'🖼️',18:'🎞️',19:'▶️',20:'🌊',21:'🎇'};
-
 let allTemplates = [];
 let allMusic = [];
 
@@ -462,12 +442,14 @@ function renderDashList() {
 function renderAdminTemplates() {
   const grid = document.getElementById('adminTemplateGrid');
   grid.innerHTML = allTemplates.map(t => {
-    const num = parseInt(t.id.replace('tem','')) || 0;
-    const emoji = EMOJIS[num] || '🎬';
     return `
     <div class="t-admin-card">
-      <div class="t-admin-thumb" style="font-size:40px">
-        ${emoji}
+      <div class="t-admin-thumb">
+        <iframe
+          src="/api/templates/${t.id}"
+          style="position:absolute;top:0;left:0;width:250%;height:250%;border:none;pointer-events:none;transform:scale(0.4);transform-origin:top left"
+          loading="lazy"
+          title="${t.name} preview"></iframe>
         <div class="t-admin-overlay">
           <button class="btn btn-ghost btn-sm" onclick="window.open('/api/templates/${t.id}','_blank')"><i class="fas fa-eye"></i></button>
           <button class="btn btn-danger btn-sm" onclick="deleteTemplate('${t.id}')"><i class="fas fa-trash"></i></button>
@@ -529,7 +511,6 @@ async function addTemplate() {
   showToast('✅','Template added!');
 }
 
-// ── ADD TAB SWITCH ──────────────────────────────────────────────
 function switchAddTab(tab) {
   const isUpload = tab === 'upload';
   document.getElementById('apanel-upload').style.display = isUpload ? 'block' : 'none';
@@ -541,7 +522,6 @@ function switchAddTab(tab) {
 }
 
 function onLinkUrlInput() {
-  // Hide preview bar when URL changes
   document.getElementById('linkPreviewBar').style.display = 'none';
 }
 
@@ -567,15 +547,12 @@ async function addLinkMusic() {
   const url  = document.getElementById('linkMusicUrl').value.trim();
   const name = document.getElementById('linkMusicName').value.trim() || url.split('/').pop().split('?')[0] || 'Unknown Track';
   if (!url) { showToast('⚠️', 'Please enter a URL'); return; }
-
-  // Get duration from preview audio if available
   const previewAudio = document.getElementById('linkAudioPreview');
   let durStr = '—';
   if (previewAudio.src === url && previewAudio.duration && !isNaN(previewAudio.duration)) {
     const d = Math.round(previewAudio.duration);
     durStr = `${Math.floor(d/60)}:${String(d%60).padStart(2,'0')}`;
   }
-
   try {
     const res = await fetch('/api/music/add', {
       method: 'POST',
@@ -586,7 +563,6 @@ async function addLinkMusic() {
     if (data.success) {
       allMusic.push(data.music);
       renderAdminMusic(); updateStats();
-      // Reset fields
       document.getElementById('linkMusicName').value = '';
       document.getElementById('linkMusicUrl').value  = '';
       document.getElementById('linkPreviewBar').style.display = 'none';
@@ -613,7 +589,6 @@ async function migrateOldMusic() {
 async function uploadAdminMusic(event) {
   const file = event.target.files[0];
   if (!file) return;
-  // Read actual duration before uploading
   const durStr = await new Promise(resolve => {
     const tmp = new Audio(URL.createObjectURL(file));
     tmp.onloadedmetadata = () => { URL.revokeObjectURL(tmp.src); resolve(Math.round(tmp.duration) + 's'); };
@@ -624,7 +599,6 @@ async function uploadAdminMusic(event) {
   const res = await fetch('/api/upload/music', {method:'POST',body:fd});
   const data = await res.json();
   if (data.success) {
-    // Update duration for the already-inserted record
     const addRes = await fetch('/api/music/add',{method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({name:data.name,url:data.url,duration:durStr,id:data.id})});
     const added = await addRes.json();
@@ -705,6 +679,7 @@ function toggleAdminPlay(id) {
     adminPlayingId = null;
   }
 }
+
 function updateAdminDuration(id, audioEl) {
   const dur = audioEl.duration;
   if (!dur || isNaN(dur)) return;
@@ -714,6 +689,7 @@ function updateAdminDuration(id, audioEl) {
   const el = document.getElementById(`mdur_${id}`);
   if (el && (el.textContent === '—' || el.textContent === '')) el.textContent = secs + 's';
 }
+
 async function deleteMusic(id) {
   await fetch(`/api/music/${id}`,{method:'DELETE'});
   allMusic = allMusic.filter(m=>m.id!==id);
