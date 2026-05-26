@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Caryanams — Auto Video Reel Generator</title>
+  
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 <style>
@@ -35,7 +36,20 @@ html,body { height:100%; overflow:hidden; }
   80%  { transform: translateX(4px); }
   100% { transform: translateX(0); }
 }
+.logo-container{
+    width:250px;
+    height:250px;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
 
+.logo-container img{
+    width:100%;
+    height:100%;
+    object-fit:contain;
+    background:transparent;
+}
 /* ── LOGO BOUNCE: goes up to half then comes down ── */
 @keyframes logoBounce {
   0%   { transform: translateY(0); }
@@ -572,6 +586,9 @@ body {
             <button class="filter-btn" onclick="filterTemplates('PPT Style', this)">PPT</button>
             <button class="filter-btn" onclick="filterTemplates('Creative', this)">Creative</button>
             <button class="filter-btn" onclick="filterTemplates('Custom', this)" style="border-color:var(--accent2);color:var(--accent2)">✨ Custom</button>
+          </div>
+         <div class="logo-container">
+             <img src="logo.png" alt="Caryanams Logo">
           </div>
 
           <!-- ══ CUSTOM TEMPLATE BUILDER — FIRST / TOP ══ -->
