@@ -37,13 +37,7 @@ html,body { height:100%; overflow:hidden; }
   100% { transform: translateX(0); }
 }
 
-@keyframes logoBounce {
-  0%   { transform: translateY(0); }
-  30%  { transform: translateY(-8px); }
-  50%  { transform: translateY(-4px); }
-  70%  { transform: translateY(-8px); }
-  100% { transform: translateY(0); }
-}
+
 
 body {
   background: var(--bg);
@@ -64,12 +58,11 @@ body {
 }
 .navbar-brand {
   font-family: 'Syne', sans-serif;
-  font-size: 20px; font-weight: 800;
+  font-size: 26px; font-weight: 800;
   background: linear-gradient(135deg, var(--accent), var(--accent2));
   -webkit-background-clip: text; -webkit-text-fill-color: transparent;
   margin-right: 8px;
   display: inline-block;
-  animation: logoBounce 2.4s ease-in-out infinite;
 }
 .step-tabs {
   display: flex; gap: 4px;
