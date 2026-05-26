@@ -49,7 +49,7 @@ body {
 
 /* ── NAVBAR ── */
 .navbar {
-  height: 72px; flex-shrink: 0;
+  height: 90px; flex-shrink: 0;
   background: var(--surface);
   border-bottom: 1px solid var(--border);
   display: flex; align-items: center; gap: 16px;
@@ -411,7 +411,7 @@ body {
 @media (max-width: 768px) {
   html, body { height: 100%; overflow: hidden; }
   body { background: #fff; display: flex; flex-direction: column; }
-  .navbar { height: 72px; padding: 0 14px; flex-shrink: 0; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 300; overflow: hidden; }
+  .navbar { height: 90px; padding: 0 14px; flex-shrink: 0; background: #fff; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 300; overflow: hidden; }
   .step-tabs { display: none; }
   .nav-right .btn span { display: none; }
   .nav-right .btn { padding: 8px 12px; min-width: 40px; }
@@ -421,7 +421,7 @@ body {
   .canvas-label { display: none; }
   .reel-frame { width: 100% !important; height: 100% !important; border-radius: 0 !important; box-shadow: none !important; border: none !important; flex: 1; }
   .reel-frame iframe { width: 100% !important; height: 100% !important; border: none !important; }
-  .inshot-tools { order: 0; display: flex; background: #fff; padding: 6px 8px; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; border-bottom: 1.5px solid #f0f0f0; flex-shrink: 0; gap: 0; scroll-snap-type: x mandatory; position: sticky; top: 72px; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
+  .inshot-tools { order: 0; display: flex; background: #fff; padding: 6px 8px; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; border-bottom: 1.5px solid #f0f0f0; flex-shrink: 0; gap: 0; scroll-snap-type: x mandatory; position: sticky; top: 90px; z-index: 100; box-shadow: 0 2px 8px rgba(0,0,0,0.05); }
   .inshot-tools::-webkit-scrollbar { display: none; }
   .inshot-tool-btn { scroll-snap-align: start; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 6px 12px; border: none; background: transparent; cursor: pointer; border-radius: 10px; min-width: 60px; flex-shrink: 0; transition: background 0.15s; font-family: inherit; }
   .inshot-tool-btn.active { background: #f0f0ff; }
@@ -490,7 +490,7 @@ body {
   <span class="navbar-brand" style="display:flex;align-items:center;padding:0;background:none;border:none;box-shadow:none;">
     <img src="{{ url_for('static', filename='logo.png') }}"
          alt="Caryanams Logo"
-         style="height:78px;width:auto;background:transparent;border:none;box-shadow:none;display:block;">
+         style="height:100px;width:auto;background:transparent;border:none;box-shadow:none;display:block;">
   </span>
 
   <div class="step-tabs">
